@@ -251,7 +251,10 @@ class TableCollector(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         if tag == "table":
-            self._t = {"headers": [], "rows": []}
+            # Collect rows with their header-ness and decide the shape at </table>.
+            # Deciding per-row cannot distinguish a header row from a key-value
+            # table, where every row opens with a <th> that is a label, not a column.
+            self._t = {"collected": []}
         elif tag == "tr" and self._t is not None:
             self._row, self._is_header = [], False
         elif tag in ("td", "th") and self._row is not None:
@@ -267,15 +270,32 @@ class TableCollector(HTMLParser):
             self._row.append(re.sub(r"\s+", " ", "".join(self._cell)).strip())
             self._cell = None
         elif tag == "tr" and self._row is not None:
-            if self._is_header and not self._t["headers"]:
-                self._t["headers"] = self._row
-            elif self._row:
-                self._t["rows"].append(self._row)
+            if self._row:
+                self._t["collected"].append((self._is_header, self._row))
             self._row, self._is_header = None, False
         elif tag == "table" and self._t is not None:
-            if self._t["headers"] or self._t["rows"]:
-                self.tables.append(self._t)
+            self.tables.append(self._shape(self._t["collected"]))
             self._t = None
+
+    @staticmethod
+    def _shape(collected):
+        """Decide whether row 1 is a header or every row is a key-value pair."""
+        if not collected:
+            return {"headers": [], "rows": [], "orientation": "empty"}
+        header_rows = sum(1 for is_h, _ in collected if is_h)
+
+        # Every row carrying a <th> means the <th> labels the row, not a column.
+        if header_rows == len(collected) and len(collected) > 1:
+            return {"headers": [], "rows": [cells for _, cells in collected],
+                    "orientation": "key-value"}
+
+        if collected[0][0] and header_rows == 1:
+            return {"headers": collected[0][1],
+                    "rows": [cells for _, cells in collected[1:]],
+                    "orientation": "column"}
+
+        return {"headers": [], "rows": [cells for _, cells in collected],
+                "orientation": "column"}
 
 
 def js_state_blobs(html):

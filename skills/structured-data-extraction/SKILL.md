@@ -85,8 +85,8 @@ When several carry the same field, prefer in this order, and say why in the code
 
 | Source | Use when | Watch for |
 | --- | --- | --- |
-| JSON-LD | Present at all — usually the best option | Optional fields vary between pages |
-| Microdata / RDFa | No JSON-LD | Verbose; values split across attributes |
+| JSON-LD | It carries the `@type` you need | Optional fields vary between pages |
+| Microdata / RDFa | No JSON-LD *of that type* | Verbose; values split across attributes |
 | Embedded state JSON | Richest data, or JSON-LD is thin | Undocumented; the site may rename keys |
 | Open Graph | Title, image, description, canonical URL | Deliberately summarised, often truncated |
 | HTML tables | Genuinely tabular content | Column order changes silently |
@@ -95,6 +95,15 @@ When several carry the same field, prefer in this order, and say why in the code
 JSON-LD is the default because sites are motivated to keep it correct for search engines.
 Embedded state is often *richer* but is an internal shape with no compatibility promise — use it
 when it carries fields you need, and pin the key path explicitly so a rename fails loudly.
+
+**"Has JSON-LD" and "has the entity you want in JSON-LD" are different questions**, and conflating
+them is the most likely way to misread the survey. Plenty of pages emit JSON-LD describing the
+*site* — `Organization`, `WebSite`, `BreadcrumbList` — while the `Product` or `Article` itself is
+expressed as microdata, or not at all. Open Food Facts and Open Library both do exactly this: two
+JSON-LD objects that never mention the product, and a full `Product`/`Book` in microdata alongside.
+
+This is why step 1 prints the types for every source. Read the types before choosing, rather than
+seeing a JSON-LD line and stopping there.
 
 ### 5. Write extraction that fails loudly
 
