@@ -407,6 +407,16 @@ def analyse_rendering(body):
         embedded.append("JSON-LD structured data")
     if "window.__INITIAL_STATE__" in body:
         embedded.append("__INITIAL_STATE__ blob")
+    if "window.__APOLLO_STATE__" in body:
+        embedded.append("__APOLLO_STATE__ cache")
+    # The generic case, and the one most often missed: a React-style app that ships
+    # its data in a plain JSON script tag. GitHub does this via
+    # data-target="react-app.embeddedData". Such a page looks client-rendered by
+    # every other measure while the data sits in the HTML already — mistaking it
+    # for one sends people to a headless browser to render JSON they already have.
+    json_blocks = len(re.findall(r'<script[^>]+type=["\']application/json["\']', body, re.I))
+    if json_blocks:
+        embedded.append(f"{json_blocks} application/json script block(s)")
 
     if embedded:
         verdict = "server-embedded JSON"
