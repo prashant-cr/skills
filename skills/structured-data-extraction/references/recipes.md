@@ -169,6 +169,40 @@ the same class of bug as a silent selector failure.
 
 ---
 
+## Proving resilience instead of asserting it
+
+"This survives redesigns" is a claim you can test rather than promise. Strip the attributes
+selectors bind to, re-extract, and compare — if the output is identical, the extraction genuinely
+does not depend on presentation.
+
+```python
+import re
+
+def strip_styling_hooks(html):
+    """Remove exactly what a restyling would change: class, id, style."""
+    for attr in ("class", "id", "style"):
+        html = re.sub(rf'\s{attr}="[^"]*"', "", html)
+        html = re.sub(rf"\s{attr}='[^']*'", "", html)
+    return html
+
+
+def assert_resilient(html, extract):
+    before, after = extract(html), extract(strip_styling_hooks(html))
+    assert before == after, "extraction depends on styling hooks — it is selector-coupled"
+    return before
+```
+
+Run against a real page this removes hundreds of hooks — 1,351 on an Open Food Facts product —
+and a structured-data extractor returns byte-identical output while every CSS selector on the page
+would have broken.
+
+**Do not extend this by renaming tags**, which is the tempting next step and is unsound. Renaming
+`<h1>` to `<div>` on a page with unbalanced `</div>` makes a renamed element match a stray close
+tag, collapsing the parser's element stack and dropping data — a failure caused by the test, not
+the extractor. Verified: that mutation cut three extracted images to one, while attribute
+stripping alone changed nothing. Keep the mutation to attributes, since those are what actually
+change in a restyling.
+
 ## Normalising what you get
 
 Structured data is typed but not clean.
