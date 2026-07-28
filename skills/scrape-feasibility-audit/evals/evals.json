@@ -1,0 +1,31 @@
+{
+  "skill_name": "scrape-feasibility-audit",
+  "evals": [
+    {
+      "id": 0,
+      "name": "hard-target-defense-analysis",
+      "prompt": "we're building a competitor pricing dashboard and i need to pull product listings and prices off https://www.g2.com/categories/crm - roughly 5k items refreshed daily. can you check what we're up against before i start building, and tell me what to write it in?",
+      "expected_output": "An audit naming the actual bot-management vendors present (Cloudflare and DataDome are both engaged on this target), distinguishing engaged protection from mere CDN presence, stating a difficulty verdict, and recommending tooling proportionate to the finding. Should surface that daily 5k-item collection against an engaged ML-scoring vendor is a serious commitment and should check for a sanctioned path.",
+      "files": [],
+      "expectations": [
+        "Names at least one specific bot-management vendor detected on the target rather than speaking generically about anti-bot systems",
+        "States an explicit difficulty verdict or feasibility recommendation",
+        "Recommends specific named open-source libraries rather than only general advice",
+        "Mentions checking for an official API, data licensing, or another sanctioned path",
+        "Addresses request pacing or rate limiting for the stated daily volume"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "sanctioned-path-should-win",
+      "prompt": "i'm trying to scrape github.com to get the repo list, star counts and last commit date for about 200 orgs. my python requests script keeps getting back html that doesn't have the data in it. what am i doing wrong and which scraping library should i switch to?",
+      "expected_output": "Should recognise that GitHub publishes a comprehensive official API and recommend it over scraping entirely, rather than answering the library question as asked. The user's framing presupposes scraping is the right approach; the valuable answer corrects that premise.",
+      "files": [],
+      "expectations": [
+        "Recommends the official GitHub API instead of scraping HTML",
+        "Explains why the HTML lacked the data (client-rendered content or an API-backed page) rather than just suggesting a different library",
+        "Does not recommend a heavyweight browser automation stack as the primary approach"
+      ]
+    }
+  ]
+}

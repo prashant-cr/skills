@@ -40,7 +40,31 @@ npx skills use prashant-cr/skills --skill <skill-name>
 
 | Skill | Description |
 | --- | --- |
-| _(none yet)_ | |
+| [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a public website before you build a scraper: identifies bot-detection vendors (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types, robots.txt rules and rendering mode, then recommends proportionate open-source tooling. |
+
+### scrape-feasibility-audit
+
+Answers *should we collect this, and what will it take* before anyone writes code.
+
+```bash
+npx skills add prashant-cr/skills --skill scrape-feasibility-audit
+```
+
+Bundled `scripts/probe_site.py` runs standalone with no third-party dependencies:
+
+```bash
+python3 skills/scrape-feasibility-audit/scripts/probe_site.py https://example.com/products
+python3 skills/scrape-feasibility-audit/scripts/probe_site.py https://example.com --json
+```
+
+It reads robots.txt before fetching the page, declines robots-disallowed paths unless given
+`--force`, paces its requests, and sends an honest User-Agent. It reports vendors as *engaged*
+only when a scoring cookie or challenge script is present — a bare `cf-ray` means the site uses
+a CDN, not that it fights bots.
+
+Scope is public, unauthenticated content. It does not cover defeating CAPTCHAs that gate
+content, bypassing authentication or paywalls, or evading sites that have refused automated
+access; where an audit lands there, it says so and points at the sanctioned path instead.
 
 ## Repository layout
 
