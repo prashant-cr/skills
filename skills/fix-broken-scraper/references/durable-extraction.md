@@ -34,6 +34,24 @@ durability:
 Most breakages are someone having anchored at level 6 when level 2 or 3 was available on the same
 page. Before writing a selector, search the HTML for `ld+json` and `application/json`.
 
+### Rendered text is lossy; the source value usually isn't
+
+Levels 2 and 3 aren't just more durable, they are frequently *more accurate*, because markup holds
+what was formatted for a human while JSON holds what the site actually stores.
+
+GitHub's org repositories page renders a star count as `141k`; the embedded JSON on the same page
+carries `141146`. A scraper reading the DOM loses three digits of precision permanently, and
+nothing about the result looks wrong — you get a plausible number every run.
+
+The same gap shows up as truncated descriptions with an ellipsis, relative timestamps ("3 days
+ago") where an ISO datetime sits in the JSON, prices rounded or currency-formatted for a locale,
+and counts abbreviated as `1.2M`. Whenever a displayed value looks rounded, abbreviated,
+truncated or humanised, assume the exact one is nearby in structured data and check before
+parsing the text.
+
+This is worth stating plainly because it inverts the usual intuition: the visible page looks like
+ground truth and the JSON looks like an implementation detail, when it is the other way round.
+
 ---
 
 ## Writing selectors that survive redesigns
