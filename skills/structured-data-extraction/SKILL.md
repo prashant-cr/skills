@@ -48,6 +48,12 @@ tables, and feeds.
 Run this on a **content** page — a product, article or profile — not a listing or homepage.
 Listing pages often publish nothing while the detail pages behind them are richly annotated.
 
+The survey also asks the same URL for JSON (`Accept: application/json`), because frameworks that
+render from a data payload frequently serve that payload at the identical address. When it works
+it beats everything else here — GitHub's org repositories route returns 15KB of typed JSON where
+the HTML is over 400KB, with no parsing and no markup coupling at all. If the survey reports it,
+stop there and use it. `--no-negotiate` skips the extra request.
+
 ### 2. Locate the field by name
 
 ```bash

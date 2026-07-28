@@ -86,6 +86,34 @@ def fetch(url):
     return raw.decode(charset, errors="replace")
 
 
+def check_content_negotiation(url):
+    """Ask the same URL for JSON and see whether it obliges.
+
+    Frameworks that render a page from a data payload often serve that payload
+    at the identical URL when asked for JSON — GitHub's React routes return 15KB
+    of typed JSON where the HTML is over 400KB. When it works this beats every
+    other source here: no parsing, no markup coupling, and the exact numbers.
+    Cheap enough at one request to be worth always asking.
+    """
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT, context=make_ssl_context()) as r:
+            ctype = r.headers.get("Content-Type", "")
+            if "json" not in ctype.lower():
+                return None
+            raw = r.read(3_000_000)
+            data = json.loads(raw.decode(r.headers.get_content_charset() or "utf-8",
+                                         errors="replace"))
+    except Exception:
+        return None
+    return {
+        "content_type": ctype.split(";")[0].strip(),
+        "bytes": len(raw),
+        "top_level_keys": sorted(data.keys())[:12] if isinstance(data, dict) else "(not an object)",
+        "data": data,
+    }
+
+
 # --------------------------------------------------------------------------
 # Harvesters
 # --------------------------------------------------------------------------
@@ -385,6 +413,7 @@ def harvest(html, base_url=None):
         "microdata": micro.items,
         "tables": tables.tables,
         "feeds": scripts.feeds,
+        "content_negotiation": None,
     }
 
 
@@ -437,6 +466,8 @@ def summarise(s):
                       "types": sorted({str(i.get("@type")) for i in s["microdata"] if i.get("@type")})},
         "tables": [{"headers": t["headers"][:8], "rows": len(t["rows"])} for t in s["tables"]],
         "feeds": s["feeds"],
+        "content_negotiation": {k: v for k, v in s["content_negotiation"].items() if k != "data"}
+        if s.get("content_negotiation") else None,
     }
 
 
@@ -446,7 +477,17 @@ def render(s, summary):
         out.append(f"Title: {s['title'][:110]}")
         out.append("")
 
-    found_any = False
+    neg = s.get("content_negotiation")
+    if neg:
+        out.append(f"** Same URL returns JSON when asked  ({neg['content_type']}, "
+                   f"{neg['bytes']:,} bytes)")
+        if isinstance(neg["top_level_keys"], list):
+            out.append(f"   top-level keys: {', '.join(neg['top_level_keys'])}")
+        out.append("   Prefer this over everything below — no HTML parsing, no markup coupling.")
+        out.append("   Reproduce with:  curl -H 'Accept: application/json' <url>")
+        out.append("")
+
+    found_any = bool(neg)
     j = summary["jsonld"]
     if j["count"]:
         found_any = True
@@ -506,6 +547,8 @@ def main():
     p.add_argument("--dump", metavar="SOURCE",
                    help="jsonld | json_blocks | js_state | opengraph | twitter | meta | "
                         "microdata | tables | feeds | all")
+    p.add_argument("--no-negotiate", action="store_true",
+                   help="skip the Accept: application/json probe (saves one request)")
     p.add_argument("--json", action="store_true", help="emit JSON instead of text")
     args = p.parse_args()
 
@@ -518,6 +561,8 @@ def main():
         p.error("provide a URL or --file")
 
     sources = harvest(html, base_url=args.url)
+    if args.url and not args.no_negotiate:
+        sources["content_negotiation"] = check_content_negotiation(args.url)
 
     if args.dump:
         key = args.dump.lower()
