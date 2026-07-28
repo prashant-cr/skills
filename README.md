@@ -94,8 +94,10 @@ npx skills use prashant-cr/skills --skill <skill-name>
 | --- | --- |
 | [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a public website **before** you build a scraper: identifies bot-detection vendors (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types, robots.txt rules and rendering mode, then recommends proportionate open-source tooling. |
 | [`fix-broken-scraper`](skills/fix-broken-scraper) | Diagnoses **why** a working scraper broke and repairs it one verified step at a time — separates stale selectors and site redesigns from real blocking, changed routing, expired sessions, and content that moved into embedded JSON. |
+| [`structured-data-extraction`](skills/structured-data-extraction) | Extracts data **without CSS selectors**, by reading what a page already publishes — JSON-LD, microdata, Open Graph, embedded state JSON, tables and feeds — and locating a field by name so you get a JSON path instead of guessing at DOM structure. |
 
-The two are companions: one runs before you write the scraper, the other when it stops working.
+They cover the life of a scraping project: audit before you build, extract without brittle
+selectors, diagnose when something breaks.
 
 ### scrape-feasibility-audit
 
@@ -162,6 +164,36 @@ differ, so the difference isolates header-level filtering from something deeper.
 
 `--selector` accepts tag, `.class`, `#id` and descendant chains, matched with the standard library
 so there is nothing to install.
+
+### structured-data-extraction
+
+Selectors break because markup was never meant to be an interface. The same pages usually publish
+typed data alongside it — JSON-LD for search engines, Open Graph for link previews, their own state
+as JSON for the frontend — which sites keep working because breaking it costs them traffic.
+
+```bash
+npx skills add prashant-cr/skills --skill structured-data-extraction
+```
+
+Survey what a page publishes, then locate a field by name:
+
+```console
+$ python3 extract.py https://github.com/orgs/vercel/repositories --find starsCount
+
+Keys matching 'starsCount':
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[0].starsCount = 4148
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[1].starsCount = 25859
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[2].starsCount = 141146
+```
+
+That's a JSON path and an exact value, with no DOM inspection. Note `141146` — the rendered page
+shows `141k`, so the markup route silently loses three digits. Structured data is usually *more*
+accurate than the text, not just more stable.
+
+Reads JSON-LD (with `@graph` flattened and `@type` filtering), schema.org microdata, Open Graph and
+meta tags, `application/json` script blocks, `window.__NEXT_DATA__`-style state, HTML tables and
+RSS/Atom feeds. Works on a saved file with `--file`. When a page genuinely publishes nothing, it
+says so and suggests where to look instead.
 
 ## Repository layout
 
