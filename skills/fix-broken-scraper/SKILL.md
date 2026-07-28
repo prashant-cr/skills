@@ -136,8 +136,10 @@ Add one only after confirming the data is genuinely unavailable in the response,
 diagnostic's embedded-JSON check settles cheaply.
 
 **Silent partial data is worse than a crash.** A selector matching a *different* element returns
-plausible wrong values indefinitely. When output is wrong rather than absent, verify a few records
-by eye against the live page before declaring the repair done.
+plausible wrong values indefinitely. When output is wrong rather than absent, verify records by eye
+against the live page before declaring the repair done — and spread the sample across the output
+rather than checking the first few. Misalignment usually starts at the first irregular record, so
+the top of a listing is the part most likely to look correct while everything below it is wrong.
 
 **Repeated breakage is a design signal.** A scraper that breaks monthly is coupled to markup that
 changes monthly. The fix is switching anchors, not another patch.

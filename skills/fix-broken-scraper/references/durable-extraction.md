@@ -70,6 +70,14 @@ wrapper. Prefer the shortest path from a stable ancestor.
 then pull fields relative to it. Field-level selectors that reach across the whole document pick up
 unrelated matches when the layout shifts — the mechanism behind silent wrong values.
 
+**Never zip independently selected lists.** `zip(soup.select("h3.title"), soup.select("span.price"))`
+is the most common form of that mistake, and it fails in a uniquely quiet way: `zip` stops at the
+shorter list, so one extra price yields the *same row count* as before, shifted by one from the
+extra element onward, with the true last value discarded. Count assertions pass. One sale item
+rendering a struck-through was-price alongside its current price — both `class="price"` — is enough
+to do it. Iterate the cards and read each field within its own card; then a card missing a field is
+a visible `None` on that row rather than a silent shift in every row after it.
+
 **Assert cardinality — and prefer an exact count to a range.** If a listing page should yield 20–50
 items, check that. Getting 1 or 500 says the selector is matching the wrong thing.
 
