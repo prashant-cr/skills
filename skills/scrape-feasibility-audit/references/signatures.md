@@ -95,6 +95,13 @@ because it must appear in the form the site submits.
 | Cloudflare Turnstile | `challenges.cloudflare.com/turnstile/v0/api.js` | `.cf-turnstile` | `cf-turnstile-response` |
 | Arkose Labs (FunCaptcha) | `client-api.arkoselabs.com` | iframe | `fc-token` |
 | GeeTest | path containing `/gt.js` | `.geetest_*` | `geetest_challenge` |
+| DataDome CAPTCHA | `ct.captcha-delivery.com/c.js`, `geo.captcha-delivery.com` | iframe | `dd_cookie` |
+
+**Do not identify a CAPTCHA by its vendor's name.** DataDome block bodies routinely contain
+no occurrence of the string "datadome" — the challenge loads from `captcha-delivery.com`
+instead. Searching for the vendor name alone reports "no CAPTCHA present" on a page that is
+CAPTCHA-gated, which converts a stop signal into a green light. Match on the challenge
+delivery domain, not the brand.
 
 **What each implies for feasibility:**
 

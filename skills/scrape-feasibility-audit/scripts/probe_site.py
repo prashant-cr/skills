@@ -72,7 +72,7 @@ VENDORS = [
         "passive_cookies": [],
         "active_headers": ["x-datadome", "x-dd-b"],
         "active_cookies": ["datadome"],
-        "active_body": ["captcha.datadome.co", "js.datadome.co"],
+        "active_body": ["captcha.datadome.co", "js.datadome.co", "captcha-delivery.com"],
         "difficulty": "high",
         "note": "ML-scored per request. Frequently pairs with a slider puzzle on challenge.",
     },
@@ -195,6 +195,17 @@ CAPTCHAS = [
     {
         "name": "GeeTest",
         "markers": ["/gt.js", "geetest", "gt_captcha"],
+        "exclude": [],
+        "kind": "slider puzzle",
+    },
+    {
+        # DataDome serves its challenge from captcha-delivery.com, and its block bodies
+        # frequently never contain the string "datadome" at all. Keying only off the
+        # vendor name produced a false "no CAPTCHA present" on a page that was in fact
+        # CAPTCHA-gated — the worst error this tool can make, since it turns a stop
+        # signal into a green light.
+        "name": "DataDome CAPTCHA",
+        "markers": ["captcha-delivery.com", "geo.captcha", "dd_cookie", "datadome captcha"],
         "exclude": [],
         "kind": "slider puzzle",
     },
