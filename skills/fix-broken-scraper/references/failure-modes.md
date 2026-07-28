@@ -111,8 +111,20 @@ pagination bug, not a site change.
 
 When the diagnostic reports `target intact`, the fault is on your side.
 
-- **Dependency upgrades.** A parser upgrade can change HTML tree handling; a client upgrade can
-  change redirect or header defaults. Check what moved since the last working run.
+- **Dependency upgrades.** This is the most under-suspected cause, because "nothing in our code
+  changed" is usually true — and irrelevant, since the dependencies changed underneath it. An
+  unpinned requirement floats on every rebuild of a CI image or container, so the upgrade happens
+  on a night nobody deployed.
+
+  The damaging variant removes an API without a shim or a `DeprecationWarning`. Scrapy 2.17.0
+  (released 2026-07-07) dropped `Spider.start_requests()`: a spider defining it issues zero
+  requests, scrapes zero items, logs no error, and exits with `finish_reason: 'finished'`. Every
+  signal says success. A nightly job like that looks exactly like a site blocking you, which is
+  why it gets misdiagnosed as one.
+
+  So when the page checks out, get the versions before theorising: compare the installed set
+  against the last known-good run, and check the changelog of anything that moved. Pinning is the
+  repair, and pinning is also what makes the next incident diagnosable.
 - **Local versus production.** Different egress IP, different Python, different TLS. A scraper that
   works locally and fails deployed is usually an IP reputation or network difference.
 - **Cached fixtures.** Tests passing against a saved HTML file prove nothing about the live page.
