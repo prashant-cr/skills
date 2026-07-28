@@ -1,8 +1,60 @@
 # Skills
 
-A collection of [Agent Skills](https://skills.sh) — self-contained instruction packages that extend coding agents (Claude Code, Cursor, Copilot, Codex, Gemini CLI, and others) with new capabilities.
+Open [Agent Skills](https://skills.sh) — self-contained instruction packages that extend coding
+agents (Claude Code, Cursor, Copilot, Codex, Gemini CLI, and 15+ others) with new capabilities.
 
-Each skill lives in its own directory under `skills/` and is defined by a single `SKILL.md`.
+## Know what you're up against before you write a scraper
+
+`scrape-feasibility-audit` answers the two questions that decide a scraping project — **should we
+collect this, and what will it take?** — before anyone writes code. It identifies the bot-detection
+vendor, the CAPTCHA type, whether content is server- or client-rendered, and what robots.txt
+actually permits, then recommends tooling proportionate to what it found.
+
+```console
+$ python3 probe_site.py https://news.ycombinator.com
+
+Target:   https://news.ycombinator.com
+Status:   200
+Server:   nginx
+
+robots.txt
+  path /: allowed
+  crawl-delay: 30.0s  <- pace requests at least this slowly
+
+Bot protection
+  none detected from headers, cookies, or markup
+
+CAPTCHA
+  none present on this response
+
+Content delivery
+  server-rendered: 4282 chars of text present in the initial HTML.
+
+Assessment: TRIVIAL
+```
+
+Against a defended target it reports what is actually engaged and why:
+
+```console
+Bot protection
+  Cloudflare  ENGAGED [high]
+    evidence: cookie:__cf_bm, body:/cdn-cgi/challenge-platform/, header:cf-ray
+  DataDome  ENGAGED [high]
+    evidence: header:x-datadome, cookie:datadome
+
+CAPTCHA
+  DataDome CAPTCHA (slider puzzle)
+
+Assessment: HARD
+```
+
+It deliberately distinguishes a vendor being **present** from **engaged** — a bare `cf-ray` header
+means the site uses a common CDN, not that it fights bots. Conflating the two is the most common
+way these assessments go wrong, and it produces confident "this site is hard" verdicts about sites
+that are trivial.
+
+Detects Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF and F5; reCAPTCHA
+v2/v3, hCaptcha, Turnstile, Arkose and GeeTest.
 
 ## Install
 
