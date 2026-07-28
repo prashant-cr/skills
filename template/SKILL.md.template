@@ -1,0 +1,23 @@
+---
+name: skill-name-in-kebab-case
+description: One sentence on what this does, then the trigger. Use when the user asks about X, mentions Y, or is doing Z — even if they don't name the skill explicitly.
+---
+
+# Skill Name
+
+One short paragraph: what this skill gives the agent that it doesn't have by default.
+
+## Workflow
+
+1. First step, in the imperative.
+2. Second step.
+3. Third step.
+
+## Guidelines
+
+- Constraints, gotchas, and things to never do.
+- Prefer concrete rules over general advice.
+
+## References
+
+- `references/details.md` — read this when <specific condition>.
