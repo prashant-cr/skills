@@ -57,6 +57,24 @@ The `skill-creator` skill (installed globally at `~/.agents/skills/skill-creator
 
 ## Publishing
 
-Indexing is automatic from public GitHub — no submission, no manifest. Consequences: a pushed skill is immediately installable by anyone via `owner/repo`, and leaderboard rank comes from anonymous install telemetry in the CLI. Validate before pushing; a broken `SKILL.md` fails at install time on someone else's machine.
+**Installability and discoverability are different things, and only the first is automatic.**
+
+A pushed skill is immediately installable by anyone via `npx skills add prashant-cr/skills` — the
+CLI reads GitHub directly, with no registry in between. There is no submission form and no
+approval queue.
+
+Appearing in `npx skills find` or on the skills.sh leaderboard is separate and is driven purely
+by anonymous install telemetry from the CLI. Verified: `npx skills find scraping --owner
+prashant-cr` returned nothing while this repo had zero installs, even though searches for the
+same terms returned other repos' skills with as few as 9 installs. Nothing in the repository
+changes this — only real installs do. Don't manufacture installs to seed the count; install
+counts are the trust signal other users rank on, and `find-skills` explicitly tells agents to
+distrust unknown authors below 100 installs.
+
+What does help before installs exist is GitHub-side discovery: the repo description, topics
+(`agent-skills`, `claude-code`, `web-scraping`, …), and the README. Someone finds the repo on
+GitHub, installs via the CLI, and that install is what registers.
+
+Validate before pushing; a broken `SKILL.md` fails at install time on someone else's machine.
 
 Keep the "Available skills" table in `README.md` in sync when adding or removing a skill.

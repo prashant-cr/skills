@@ -1,5 +1,6 @@
 ---
 name: scrape-feasibility-audit
+license: MIT
 description: Audits a public website to determine how hard it will be to scrape and what to build it with — identifies bot detection (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types (reCAPTCHA, hCaptcha, Turnstile, Arkose, GeeTest), robots.txt rules, rate limits, and whether content is server- or client-rendered, then recommends open-source libraries. Use this whenever the user asks whether a site can be scraped, why their scraper is getting blocked or returning empty pages, what anti-bot protection a site uses, which scraping library or framework to pick, or is planning any data-collection or crawling project — even if they only mention a URL and extracting data from it.
 ---
 
