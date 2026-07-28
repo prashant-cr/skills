@@ -56,8 +56,19 @@ a field. Older than JSON-LD and still common on established sites.
 
 The value comes from the element's text *except* where a more precise attribute exists — `content`
 on `<meta>`, `href` on `<a>`/`<link>`, `src` on media, `datetime` on `<time>`, `value` on `<data>`.
-That exception is the point: `datetime="1815-12-10"` is machine-readable where the text
+Often that is exactly what you want: `datetime="1815-12-10"` is machine-readable where the text
 "Dec 1815" is not.
+
+**But the `<a>` case cuts the other way.** A brand marked up as
+`<a itemprop="brand" href="/facets/brands/Ferrero">Ferrero</a>` yields `/facets/brands/Ferrero` —
+spec-correct, and not the name you wanted. Open Food Facts does exactly this. When a microdata
+value comes back looking like a path, the human-readable form is in the element text, and you
+either want the last path segment or a second pass that reads text for that property.
+
+Two related warts: properties **repeat**, so `name` may arrive as a list containing a heading like
+`"Book Details"` alongside the real title; and nesting errors are common because nothing visibly
+breaks when they happen. JSON-LD has none of these problems, which is why it is preferred where it
+carries your type.
 
 RDFa uses `vocab`/`typeof`/`property` for the same purpose and appears mostly on older or
 publishing-oriented sites.
