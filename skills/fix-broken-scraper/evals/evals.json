@@ -1,0 +1,31 @@
+{
+  "skill_name": "fix-broken-scraper",
+  "evals": [
+    {
+      "id": 0,
+      "name": "blocked-premise-is-wrong-selectors-stale",
+      "prompt": "my python scraper for github org repos broke. it used to grab repo names and star counts off https://github.com/orgs/vercel/repositories with soup.select('li.repo-list-item') and now it just returns an empty list every time. i think github is blocking me now? do i need to switch to selenium or get proxies?",
+      "expected_output": "Should establish that GitHub is NOT blocking (plain requests returns HTTP 200), that li.repo-list-item is stale because the page is a React route shipping data in a <script type=\"application/json\" data-target=\"react-app.embeddedData\"> blob, and should explicitly reject Selenium and proxies as fixes for a markup change. Ground truth verified: diagnose.py classifies this as 'content moved into embedded JSON'.",
+      "files": [],
+      "expectations": [
+        "States that GitHub is not blocking the request and cites the HTTP 200 status as evidence",
+        "Identifies that the data now lives in an embedded JSON script block rather than in li.repo-list-item markup",
+        "Explicitly advises against switching to Selenium or adding proxies for this failure",
+        "Provides concrete working extraction code or a specific JSON key path rather than only prose advice"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "premise-wrong-selector-still-matches",
+      "prompt": "our nightly scrapy job that pulls hacker news front page stories started returning 0 items about a week ago. the spider uses response.css('td.title a::text') for headlines. nothing in our code changed. is HN rate limiting us or did they redesign? need this fixed tonight, and honestly it breaks every few months so i'd like it to stop doing that.",
+      "expected_output": "Should discover that td.title a STILL matches on the live page (verified: 61 elements) and therefore that neither offered explanation — rate limiting nor redesign — is established by the evidence. Should redirect to pacing (HN publishes Crawl-delay: 30), the job's own environment, or the response actually received at run time. Should also answer the durability request with stable-anchor and fail-loudly guidance.",
+      "files": [],
+      "expectations": [
+        "Determines empirically whether td.title a still matches the live page rather than assuming a redesign",
+        "Does not assert a redesign as the cause without evidence for it",
+        "Mentions HN's robots.txt Crawl-delay of 30 seconds or otherwise addresses request pacing",
+        "Answers the recurring-breakage request with durability guidance such as stable anchors or alerting on empty results"
+      ]
+    }
+  ]
+}

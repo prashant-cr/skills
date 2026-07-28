@@ -92,7 +92,10 @@ npx skills use prashant-cr/skills --skill <skill-name>
 
 | Skill | Description |
 | --- | --- |
-| [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a public website before you build a scraper: identifies bot-detection vendors (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types, robots.txt rules and rendering mode, then recommends proportionate open-source tooling. |
+| [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a public website **before** you build a scraper: identifies bot-detection vendors (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types, robots.txt rules and rendering mode, then recommends proportionate open-source tooling. |
+| [`fix-broken-scraper`](skills/fix-broken-scraper) | Diagnoses **why** a working scraper broke and repairs it one verified step at a time — separates stale selectors and site redesigns from real blocking, changed routing, expired sessions, and content that moved into embedded JSON. |
+
+The two are companions: one runs before you write the scraper, the other when it stops working.
 
 ### scrape-feasibility-audit
 
@@ -117,6 +120,48 @@ a CDN, not that it fights bots.
 Scope is public, unauthenticated content. It does not cover defeating CAPTCHAs that gate
 content, bypassing authentication or paywalls, or evading sites that have refused automated
 access; where an audit lands there, it says so and points at the sanctioned path instead.
+
+### fix-broken-scraper
+
+Most "I'm being blocked" reports aren't blocking. The page returns 200 and the selectors stopped
+matching — but *blocked* is the loudest hypothesis, so people add browsers and proxies that cost
+memory and maintenance forever and never touch the actual fault.
+
+This classifies the failure first, then repairs one verified step at a time.
+
+```bash
+npx skills add prashant-cr/skills --skill fix-broken-scraper
+```
+
+```console
+$ python3 diagnose.py https://github.com/orgs/vercel/repositories --selector "li.repo-list-item"
+
+Checks
+  [ok] connect: HTTP 200 in 0.87s
+  [ok] plain request accepted: status 200
+  [!!] selector 'li.repo-list-item' matches: 0 element(s)
+
+Embedded data: 6 application/json script block(s)
+
+Diagnosis: CONTENT MOVED INTO EMBEDDED JSON
+  'li.repo-list-item' matches nothing, but the page ships data in 6 application/json
+  script block(s). The content is in the response — it is no longer in the markup you
+  were parsing.
+
+Next steps
+  1. Parse the JSON blob directly instead of the rendered markup. It is both more
+     stable and cheaper than any browser.
+  2. Do not add a headless browser for this: it would render JSON you already have.
+```
+
+It distinguishes nine failure classes — `target intact`, `selectors stale`, `content moved into
+embedded JSON`, `client-rendered`, `routing changed`, `header-level filtering`, `blocked`,
+`transport`, `content changed or removed` — and gives next steps for that class only. When a plain
+request looks blocked it retries once with browser headers; same IP and TLS stack, only headers
+differ, so the difference isolates header-level filtering from something deeper.
+
+`--selector` accepts tag, `.class`, `#id` and descendant chains, matched with the standard library
+so there is nothing to install.
 
 ## Repository layout
 
