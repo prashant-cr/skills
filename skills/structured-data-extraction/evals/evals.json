@@ -26,6 +26,36 @@
         "States honestly that structured-data coverage is incomplete rather than overselling it as universal",
         "Notes that neither test page actually exposes a price, despite the stated price-tracking goal"
       ]
+    },
+    {
+      "id": 2,
+      "name": "same-url-returns-json-beats-every-parser",
+      "prompt": "i want to track topic activity on https://meta.discourse.org/latest — title, reply count, view count and when each topic was last active. i started writing a parser for the topic list table but the rows have a lot going on. what should i be selecting on to get those four fields reliably?",
+      "expected_output": "The user is asking a selector question about a page that does not need to be parsed at all. Ground truth verified live: requesting the identical URL with an Accept: application/json header returns HTTP 200 with content-type application/json and roughly 87KB of typed JSON, top-level keys flair_groups, primary_groups, topic_list and users. topic_list.topics holds 30 entries with about 39 fields each, including title, reply_count, views, created_at, last_posted_at, id, slug, category_id, tags, posts_count, like_count and pinned. The HTML at the same address is roughly 99KB carrying only about 3.6KB of visible text. The strongest answer stops at the negotiated JSON. The real trap is that this page also publishes four other plausible sources — microdata (ItemList, SiteNavigationElement), Open Graph, a 30-row HTML table with Topic/Replies/Views/Activity headers, and two RSS feeds at /posts.rss and /latest.rss — so an answer that lands on the table or the microdata is extracting real data while ignoring the source that requires no parsing and no markup coupling. Worth noting concretely: the JSON carries ISO 8601 timestamps such as 2013-02-01T04:52:28.073Z where the table's Activity column shows relative text, and it exposes fields the five-column table has no room for. Do not claim the rendered table rounds its counts — it does not; the accuracy argument here is timestamps and field coverage, not rounding.",
+      "files": [],
+      "expectations": [
+        "Discovers that the same URL returns JSON when asked with an Accept: application/json header",
+        "Recommends the negotiated JSON over parsing the HTML table, microdata, Open Graph or the RSS feeds",
+        "Maps all four requested fields to concrete JSON paths under topic_list.topics rather than to CSS selectors",
+        "Delivers runnable code that was actually executed, and reports a concrete record count such as 30 topics",
+        "Notes at least one concrete advantage of the JSON over the table, such as ISO 8601 timestamps or fields the table does not carry",
+        "Does not claim the rendered table rounds or truncates its reply and view counts"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "nothing-machine-readable-say-so-and-find-the-api",
+      "prompt": "i'm collecting hacker news stories for a research dataset — title, author, score and comment count per item, going back over a large id range. pages look like https://news.ycombinator.com/item?id=1 . i keep reading that you should use json-ld or schema.org instead of css selectors, so what structured data does HN publish and how do i read it?",
+      "expected_output": "The honest answer is that HN publishes none, and the valuable answer does not stop there. Ground truth verified with the survey script: the item page yields no JSON-LD, no microdata, no Open Graph, no embedded state JSON and no feed — the only things reported are six tables, all of which are layout tables with no header row rather than data tables. That last point is the trap: an answer that seizes on 'six tables' and proposes reading them as tabular data has misread the survey. The correct route is the skill's own fallback, and here the first fallback wins outright — HN publishes a documented official API at hacker-news.firebaseio.com. Verified live: https://hacker-news.firebaseio.com/v0/item/1.json returns {\"by\":\"pg\",\"descendants\":3,\"id\":1,\"kids\":[...],\"score\":57,\"time\":1160418111,\"title\":\"Y Combinator\",\"type\":\"story\",\"url\":\"http://ycombinator.com\"}, which carries every field the user asked for — title, by, score, and descendants as the comment count — as typed JSON keyed by the same id the user is already iterating. Given the stated plan to walk a large id range, the answer should also raise pacing: HN's robots.txt publishes Crawl-delay: 30.",
+      "files": [],
+      "expectations": [
+        "States plainly that HN item pages publish no JSON-LD, microdata or Open Graph rather than inventing structured data for them",
+        "Does not propose reading the six layout tables as though they were data tables",
+        "Identifies the official Hacker News API at hacker-news.firebaseio.com as the right source",
+        "Maps the four requested fields to concrete API keys, including descendants as the comment count",
+        "Delivers runnable code that was actually executed against the API rather than only describing it",
+        "Raises request pacing for the large id range, citing HN's Crawl-delay of 30 seconds or an equivalent limit"
+      ]
     }
   ]
 }
