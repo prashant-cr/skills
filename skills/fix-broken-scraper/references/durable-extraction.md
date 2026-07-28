@@ -70,9 +70,23 @@ wrapper. Prefer the shortest path from a stable ancestor.
 then pull fields relative to it. Field-level selectors that reach across the whole document pick up
 unrelated matches when the layout shifts — the mechanism behind silent wrong values.
 
-**Assert cardinality.** If a listing page should yield 20–50 items, check that. Getting 1 or 500 is
-a signal the selector is matching the wrong thing, and it is the difference between noticing today
-and noticing next quarter.
+**Assert cardinality — and prefer an exact count to a range.** If a listing page should yield 20–50
+items, check that. Getting 1 or 500 says the selector is matching the wrong thing.
+
+A range misses the more common contamination, though, which is off-by-one. Navigation and
+pagination controls frequently sit inside the same container as content: Hacker News puts its
+"More" link in a `td.title`, the same cell class as every story, so `td.title a` returns 31 anchors
+on a 30-story page and the extra one is a story titled "More". Nothing errors, the count looks
+sane, and the junk record persists in every run.
+
+When you know the exact expected count, assert it. Where you don't, filter positively — select
+elements that have the attribute a real record must have, rather than taking everything the
+container yields and hoping none of it is chrome.
+
+**Test selectors with a real parser, not a regex.** A quick `re.findall` on `<td class="title"`
+misses the same element written with single quotes, and will confidently report zero matches for
+markup that is plainly there. Attribute quoting, ordering and self-closing tags are exactly what
+HTML parsers exist to normalise.
 
 ---
 
