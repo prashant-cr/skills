@@ -42,7 +42,23 @@ def parse_frontmatter(text):
         if ":" not in line:
             return None, None, f"frontmatter line is not 'key: value': {line!r}"
         key, _, value = line.partition(":")
-        fields[key.strip()] = value.strip().strip("\"'")
+        raw = value.strip()
+        quoted = len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "\"'"
+        if not quoted:
+            # A real YAML parser reads these as structure, not text, and the
+            # skills CLI then drops the whole skill without saying why.
+            if re.search(r":(\s|$)", raw):
+                return None, None, (
+                    f"'{key.strip()}' value contains an unquoted ': ' — YAML reads "
+                    "it as a nested mapping and the skill is skipped at install "
+                    "time (use an em dash, or quote the whole value)"
+                )
+            if re.search(r"\s#", raw):
+                return None, None, (
+                    f"'{key.strip()}' value contains an unquoted ' #' — YAML reads "
+                    "the rest as a comment (quote the whole value)"
+                )
+        fields[key.strip()] = raw.strip("\"'")
     return fields, match.group(2), None
 
 
