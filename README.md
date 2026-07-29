@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all five. See [Installing](#installing) for the difference
+Skills are independent — take one, take all six. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -102,7 +102,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL five when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL six when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,
