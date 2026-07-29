@@ -26,6 +26,12 @@ npx skills add prashant-cr/skills
 Together they cover the life of a scraping project: audit before you build, extract without brittle
 selectors, diagnose when something breaks.
 
+### Markets & research
+
+| Skill | What it does |
+| --- | --- |
+| [`news-stock-impact`](skills/news-stock-impact) | Turns today's news into a ranked shortlist of listed companies genuinely **exposed** to it — the event, the transmission mechanism to a revenue or cost line, how much the stock has *already* moved, and what would invalidate the idea. Any market, any cap. |
+
 ## See one in action
 
 `structured-data-extraction` surveys what a page publishes, then locates a field by name:
