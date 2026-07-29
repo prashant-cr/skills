@@ -1,0 +1,71 @@
+{
+  "skill_name": "stock-deep-dive",
+  "evals": [
+    {
+      "id": 0,
+      "name": "full-deep-dive-from-a-bare-ask",
+      "prompt": "can you do a proper deep dive on NVDA for me and tell me if i should invest. i keep reading opposite takes and i want an actual analysis not a hot take. i'm investing for the long haul but i also don't want to buy at a stupid price.",
+      "expected_output": "The complete workflow, and the user has explicitly asked for both horizons ('long haul' but 'not at a stupid price'), which is exactly the split the skill separates. A good answer scores all six dimensions with evidence rather than impression, and critically does not let a strong business score carry the valuation dimension — for a company priced for exceptional growth these should diverge, and the divergence is the answer. Financials must be sourced from filings rather than recalled; figures for a company this heavily covered are the easiest thing in the world to produce from memory and get subtly wrong. Should establish what the price already implies rather than asserting 'expensive' or 'cheap', should build a genuine bear case rather than a token risks list, and should give bull/base/bear scenarios with the assumptions each rests on. A verdict that is high-conviction in both directions on a stock with this much disagreement is a warning sign, not a strength.",
+      "files": [],
+      "expectations": [
+        "Scores all six dimensions with a number and cites specific evidence for each rather than asserting a grade",
+        "Gives a separate verdict for the long-term horizon and the next twelve months rather than collapsing them",
+        "Establishes what growth the current price implies rather than only asserting the stock is expensive or cheap",
+        "Presents a substantive bear case that a well-informed sceptic would recognise, not a token risks paragraph",
+        "Gives bull, base and bear scenarios with the assumptions each depends on",
+        "Sources financial figures from filings or company disclosures rather than stating them from memory",
+        "States what could not be verified rather than presenting the analysis as complete",
+        "States that this is research to verify rather than personal investment advice"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "great-company-is-not-the-same-as-great-investment",
+      "prompt": "my brother in law keeps saying costco is the single best retail business in the world, the membership model is unbeatable, customers never leave, and that means it's basically a no brainer to just buy and hold forever. he says valuation doesn't matter if the business is good enough. is he right? should i just buy it",
+      "expected_output": "This tests the idea the whole skill is organised around: a great company and a great investment are different questions, and the second one is the open one. The correct answer largely agrees with the business quality claim — the membership model, renewal rates and pricing discipline are genuinely excellent and should score high — while separating that from the price. The specific assertion to address head-on is 'valuation doesn't matter if the business is good enough', which is false and is the exact error the reverse DCF exists to catch: paying a price that implies growth the business cannot deliver produces poor returns from an excellent company. A strong answer therefore scores business quality and moat high and valuation independently, works out what the current price requires, and explains that the two can coexist. The useful verdict is often 'excellent business, demanding entry point' with a level at which the view would change — not a simple yes or no.",
+      "files": [],
+      "expectations": [
+        "Agrees that the business quality and moat are genuinely strong rather than contrarian for its own sake",
+        "Directly addresses and corrects the claim that valuation does not matter for a high-quality business",
+        "Scores valuation independently of business quality rather than letting a strong business lift the valuation score",
+        "Works out what growth or return the current price implies",
+        "Reaches a verdict that can distinguish the quality of the business from the attractiveness of the price",
+        "States what would change the verdict, such as a price level or a change in the growth outlook"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "banks-need-a-different-toolkit",
+      "prompt": "analyse HDFC Bank for me as a long term hold. give me the EV/EBITDA, the free cash flow yield and the debt to equity ratio so i can compare it against the other stocks on my watchlist which are mostly IT and FMCG names.",
+      "expected_output": "The user has asked for three metrics that are meaningless or misleading for a bank, and the valuable answer explains why rather than computing them to be helpful. For a lender, debt is raw material rather than leverage, so debt/equity does not measure financial risk the way it does for an operating company; EBITDA and free cash flow are not meaningful for an institution whose cash flows are lending flows. Producing those numbers anyway — and letting the user rank a bank against IT and FMCG names on them — would produce a confidently wrong comparison, which is worse than refusing the framing. The correct toolkit is net interest margin, asset quality (non-performing loans, provision coverage, credit costs), capital adequacy against the regulatory minimum, cost-to-income, deposit mix with an emphasis on low-cost CASA deposits, and valuation on price/book read against ROE. Should also note that cross-sector ranking on a single metric is the underlying mistake, and that provisioning adequacy is the judgement that matters most because a bank can report excellent profit by under-provisioning.",
+      "files": [],
+      "expectations": [
+        "Explains that EV/EBITDA and free cash flow yield are not meaningful measures for a bank",
+        "Explains that debt/equity does not measure financial risk for a lender the way it does for an operating company",
+        "Substitutes bank-appropriate metrics including net interest margin, asset quality or credit costs, and capital adequacy",
+        "Values the bank on price/book in relation to ROE rather than on an earnings or EBITDA multiple alone",
+        "Addresses the deposit franchise or funding mix as a source of durable advantage",
+        "Warns that ranking a bank against IT and FMCG companies on a single common metric is itself the error",
+        "Does not simply produce the three requested metrics without qualification"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "headline-growth-hiding-a-cash-problem",
+      "prompt": "a friend put me onto this mid cap and the numbers look incredible - revenue up about 25% a year, profit growing even faster than that, margins improving every single year and return on equity has gone from 15% to over 20%. he reckons it's a multibagger compounder. i pulled the last five years of financials into the attached file. am i missing something or should i load up?",
+      "expected_output": "Everything the user lists is true and every one of those metrics is improving — which is exactly why this is dangerous. Ground truth is deterministic and was verified by running the bundled quality_check.py on the attached file. Revenue compounds at 24.7% and net income at 29.5%, net margin expands from 9.0% to 10.5%, and ROE rises from 15.4% to 20.4%. Meanwhile operating cash flow falls every single year from 88 to 38 while profit rises from 74 to 208; cumulative CFO is just 0.50x cumulative net income; CFO/NI decays 1.19x, 0.85x, 0.57x, 0.34x, 0.18x; free cash flow goes from +43 to -82 and has been negative since 2023; receivables compound at 45.3% against revenue at 24.7%, rising from 15.9% to 29.3% of revenue; debt/equity climbs from 0.44x to 0.77x; and the share count grows 3.3% a year. The script raises six flags, three of them HIGH. The correct answer identifies that the profit is not converting to cash, names the receivables build as the likely route, and explains that the growth is being funded by debt and dilution rather than by the business. It should conclude that this is not a compounder on the evidence available and should score financial health and earnings quality low regardless of the strong headline growth — while framing the flags as questions to investigate rather than an accusation of fraud, since aggressive-but-legitimate explanations exist. Answering 'yes, load up' on the basis of the growth metrics is the failure this eval exists to catch.",
+      "files": [
+        "evals/files/meridian_financials.json"
+      ],
+      "expectations": [
+        "Identifies that operating cash flow falls every year while net income rises, and treats this as the central finding",
+        "Reports the cash conversion problem concretely, such as cumulative CFO at roughly 0.50x net income or CFO/NI declining to 0.18x",
+        "Identifies that receivables are growing far faster than revenue and links this to the cash shortfall",
+        "Notes that free cash flow has been negative since 2023 despite rising reported profit",
+        "Notes that rising debt and share issuance are funding the growth rather than the business itself",
+        "Does not endorse the compounder thesis or advise buying on the strength of the headline growth metrics",
+        "Frames the findings as questions requiring investigation rather than asserting fraud outright"
+      ]
+    }
+  ]
+}

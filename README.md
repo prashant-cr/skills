@@ -31,6 +31,7 @@ selectors, diagnose when something breaks.
 | Skill | What it does |
 | --- | --- |
 | [`news-stock-impact`](skills/news-stock-impact) | Turns today's news into a ranked shortlist of listed companies genuinely **exposed** to it — the event, the transmission mechanism to a revenue or cost line, how much the stock has *already* moved, and what would invalidate the idea. Any market, any cap. |
+| [`stock-deep-dive`](skills/stock-deep-dive) | Full fundamental analysis of one company — business, moat, earnings quality, management, and **what the current price already implies** — scored 0–10 across six dimensions, with bull/base/bear scenarios and separate verdicts for the long term and the next year. |
 
 ## See one in action
 

@@ -1,0 +1,22 @@
+{
+  "company": "Meridian Industrial Ltd",
+  "currency": "USD",
+  "unit": "millions",
+  "years": [
+    {"year": 2021, "revenue": 820, "net_income": 74, "operating_cash_flow": 88,
+     "capex": 45, "receivables": 130, "inventory": 75, "total_debt": 210,
+     "shareholders_equity": 480, "diluted_shares": 50.0},
+    {"year": 2022, "revenue": 1010, "net_income": 96, "operating_cash_flow": 82,
+     "capex": 58, "receivables": 190, "inventory": 100, "total_debt": 290,
+     "shareholders_equity": 570, "diluted_shares": 50.5},
+    {"year": 2023, "revenue": 1265, "net_income": 124, "operating_cash_flow": 71,
+     "capex": 76, "receivables": 275, "inventory": 140, "total_debt": 400,
+     "shareholders_equity": 685, "diluted_shares": 52.0},
+    {"year": 2024, "revenue": 1580, "net_income": 160, "operating_cash_flow": 55,
+     "capex": 95, "receivables": 400, "inventory": 195, "total_debt": 560,
+     "shareholders_equity": 830, "diluted_shares": 54.0},
+    {"year": 2025, "revenue": 1980, "net_income": 208, "operating_cash_flow": 38,
+     "capex": 120, "receivables": 580, "inventory": 270, "total_debt": 790,
+     "shareholders_equity": 1020, "diluted_shares": 57.0}
+  ]
+}
