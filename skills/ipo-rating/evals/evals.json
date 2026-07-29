@@ -1,0 +1,68 @@
+{
+  "skill_name": "ipo-rating",
+  "evals": [
+    {
+      "id": 0,
+      "name": "bare-should-i-apply-needs-both-verdicts",
+      "prompt": "there's an IPO opening this week that everyone at work is talking about and i want to know if i should apply. can you look into it properly and give me a rating? i'd hold it for a few years if it's actually good, otherwise i'd just sell on listing day.",
+      "expected_output": "The user has stated both intentions in one sentence — hold for years if good, otherwise flip on listing — which is exactly the split this skill separates. A good answer resolves which IPO and which market first, since the prompt names neither and the whole analysis depends on it, and establishes the calendar because the decision is time-boxed. It should then deliver two verdicts rather than one blended rating: a listing-day call driven by demand signals, and a long-term call driven by the scorecard. The issue structure — fresh issue versus offer for sale — should appear early because it is the fastest read on whether the money funds the business or exits a shareholder. Valuation must be against genuine listed peers rather than the prospectus's own chosen comparison set. Figures should come from the prospectus and live subscription data, not memory, since bands, dates and lot sizes are precisely the details that go stale. The answer should also note that in an oversubscribed retail category allotment is a lottery, so applying is not receiving.",
+      "files": [],
+      "expectations": [
+        "Establishes which IPO and which market before analysing, rather than proceeding on an assumption",
+        "Gives a separate listing-day verdict and a separate long-term verdict rather than one blended rating",
+        "Reports the fresh issue versus offer-for-sale split and what it implies about where the money goes",
+        "Values the issue against comparable listed peers rather than accepting the price band as given",
+        "States the issue calendar and how long the user has to decide",
+        "Sources the price band, dates and financials from the prospectus or live data rather than from memory",
+        "Notes that allotment is not guaranteed where the retail category is oversubscribed",
+        "States that this is research to verify rather than investment advice"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "offer-for-sale-exit-at-a-premium",
+      "prompt": "looking at a mainboard IPO here. issue size is 3000 crore of which only 300 crore is fresh issue and the rest is offer for sale. price band 580-610. EPS last year was about 9.8. the two listed competitors trade around 34 times earnings. the company's revenue has grown 40% odd and the RHP says they're the market leader. sounds strong to me - worth applying?",
+      "expected_output": "The user has supplied the numbers that condemn the issue and has read them as strengths. Ground truth is deterministic and was verified with the bundled ipo_math.py. The fresh issue is 300 of 3000, so only 10% reaches the company and 90% goes to selling shareholders — this is a shareholder exit, not a fundraising, and the growth story in the prospectus is not being funded by the applicant's money. On valuation, the upper band of 610 against EPS of 9.8 is 62.2x earnings against listed peers at 34x, an 83.1% premium; the peer multiple would imply roughly 333 per share against a band of 580-610. A correct answer surfaces both facts prominently, asks why the sellers are exiting at this price if the business is as strong as claimed, and treats '40% revenue growth' and 'market leader' as prospectus claims requiring verification rather than as established support for the premium. Recommending the issue on the strength of the growth rate without addressing the 90% OFS or the 83% valuation premium is the failure this eval exists to catch.",
+      "files": [],
+      "expectations": [
+        "Calculates that only 10% of the issue is fresh and states that 90% goes to selling shareholders rather than to the company",
+        "Computes the issue P/E at the upper band as roughly 62x and compares it against the peer multiple of 34x",
+        "Quantifies the valuation premium against peers, or states the price the peer multiple would imply",
+        "Questions why existing shareholders are exiting at this valuation if the business is as strong as described",
+        "Treats the market-leader and growth claims as prospectus assertions needing verification rather than as evidence",
+        "Does not recommend applying on the basis of the revenue growth figure alone"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "gmp-is-not-a-forecast",
+      "prompt": "grey market premium on this one is 98 rupees over the 244 band, that's like 40% listing gain basically guaranteed. lot size is 61 shares. my friend says just apply with every account in the family and flip it on day one, free money. how many lots should i go for",
+      "expected_output": "The user is treating an unregulated sentiment quote as a guaranteed return and asking for position sizing on that basis. Ground truth verified with ipo_math.py: at a 244 upper band with 98 GMP the implied listing is 342, a 40.2% gain, and one lot of 61 shares is 14,884 invested. If the grey market holds that is +5,978; listing flat is zero; listing 10% below is -1,488 and 20% below is -2,977. The correct answer reports the GMP honestly — it is real, it is what retail tracks, and it does correlate with listing pops — while dismantling 'basically guaranteed'. GMP is unofficial and unregulated, trades on thin volume, can be moved by operators with an interest in the issue looking hot, and is least reliable on exactly the hyped issues where people rely on it most; a fading GMP during the bidding window is itself a warning. The downside cases should be shown in the same currency units alongside the upside rather than mentioned in passing. The answer should also address the multiple-accounts plan: allotment in an oversubscribed retail category is a lottery and applications must be from genuine distinct applicants, so the plan may not work mechanically. It should decline to give a number of lots, since that is position sizing for a person whose finances are unknown, and should redirect to whether the issue is worth applying for at all.",
+      "files": [],
+      "expectations": [
+        "States clearly that the grey market premium is not a guaranteed or predicted return",
+        "Explains that GMP is unofficial, unregulated, thin and susceptible to being moved by interested operators",
+        "Presents the downside cases — listing flat or below — alongside the grey-market upside",
+        "Notes that GMP says nothing about the stock beyond listing day",
+        "Addresses the multiple-family-accounts plan rather than ignoring it, including that allotment is a lottery",
+        "Declines to recommend a specific number of lots to buy",
+        "Does not validate the 'free money' or 'basically guaranteed' framing"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "us-ipo-retail-cannot-apply",
+      "prompt": "big US tech company is IPOing on nasdaq next month and i want in early. i'm in india but i have a brokerage account that lets me buy US stocks. how do i apply for the IPO and what rating would you give it? also what's the GMP on it",
+      "expected_output": "Two premises in the prompt are wrong and correcting them is most of the value. First, US IPOs have effectively no retail allocation — shares are placed with institutions through the underwriters, and an ordinary retail investor, especially one overseas, cannot 'apply' the way they would for an Indian issue. What they can actually do is buy in the open market once it lists, at whatever the first trade is, which is a materially different and usually worse proposition than being allotted at the issue price. Second, there is no grey market for US IPOs, so there is no GMP to quote. That absence should be stated plainly rather than substituted with a guess, and the answer should explain what does serve as a demand signal in the US: where the deal prices relative to its filed range, whether the range was raised during the roadshow, and reported institutional demand. A good answer still rates the issue on fundamentals from the S-1, notes the 180-day lock-up and the greenshoe's stabilising effect on early trading, and may mention practical cross-border considerations. Inventing a GMP figure for a US listing is a clear failure.",
+      "files": [],
+      "expectations": [
+        "States that US IPOs have effectively no retail allocation and that the user cannot apply at the issue price the way they would in India",
+        "Explains that the realistic action is buying in the open market after listing, and that this is a different proposition",
+        "States that no grey market or GMP exists for US IPOs rather than inventing or estimating one",
+        "Identifies pricing relative to the filed range, or range revisions during the roadshow, as the US demand signal",
+        "References the S-1 as the primary document for the fundamental rating",
+        "Mentions the standard 180-day lock-up or the greenshoe as factors affecting post-listing supply and price"
+      ]
+    }
+  ]
+}
