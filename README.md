@@ -1,84 +1,92 @@
 # Skills
 
-Open [Agent Skills](https://skills.sh) — self-contained instruction packages that extend coding
-agents (Claude Code, Cursor, Copilot, Codex, Gemini CLI, and 15+ others) with new capabilities.
+Open [Agent Skills](https://skills.sh) — self-contained instruction packages that teach coding
+agents to do a specific job well.
 
-## Know what you're up against before you write a scraper
+A skill is Markdown an agent reads at runtime, plus any scripts and reference material it needs.
+Install one and your agent gains a capability it keeps: it knows when to reach for it, what steps
+to follow, and what to check before claiming it worked.
 
-`scrape-feasibility-audit` answers the two questions that decide a scraping project — **should we
-collect this, and what will it take?** — before anyone writes code. It identifies the bot-detection
-vendor, the CAPTCHA type, whether content is server- or client-rendered, and what robots.txt
-actually permits, then recommends tooling proportionate to what it found.
+Works with Claude Code, Cursor, GitHub Copilot, Codex, Gemini CLI, Windsurf and 20+ other agents.
 
-```console
-$ python3 probe_site.py https://news.ycombinator.com
-
-Target:   https://news.ycombinator.com
-Status:   200
-Server:   nginx
-
-robots.txt
-  path /: allowed
-  crawl-delay: 30.0s  <- pace requests at least this slowly
-
-Bot protection
-  none detected from headers, cookies, or markup
-
-CAPTCHA
-  none present on this response
-
-Content delivery
-  server-rendered: 4282 chars of text present in the initial HTML.
-
-Assessment: TRIVIAL
+```bash
+npx skills add prashant-cr/skills
 ```
 
-Against a defended target it reports what is actually engaged and why:
+## Available skills
+
+### Web scraping & data extraction
+
+| Skill | What it does |
+| --- | --- |
+| [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a site **before** you build a scraper — bot-detection vendor, CAPTCHA type, robots.txt rules, server- or client-rendered — then recommends tooling proportionate to what it actually found. |
+| [`structured-data-extraction`](skills/structured-data-extraction) | Extracts data **without CSS selectors**, by reading what a page already publishes: JSON-LD, microdata, Open Graph, embedded state JSON, tables and feeds. Find a field by name, get a JSON path. |
+| [`fix-broken-scraper`](skills/fix-broken-scraper) | Diagnoses **why** a scraper broke and repairs it one verified step at a time — separating stale selectors from real blocking, changed routing, and content that moved into embedded JSON. |
+
+Together they cover the life of a scraping project: audit before you build, extract without brittle
+selectors, diagnose when something breaks.
+
+## See one in action
+
+`structured-data-extraction` surveys what a page publishes, then locates a field by name:
 
 ```console
-Bot protection
-  Cloudflare  ENGAGED [high]
-    evidence: cookie:__cf_bm, body:/cdn-cgi/challenge-platform/, header:cf-ray
-  DataDome  ENGAGED [high]
-    evidence: header:x-datadome, cookie:datadome
+$ python3 extract.py https://github.com/orgs/vercel/repositories --find starsCount
 
-CAPTCHA
-  DataDome CAPTCHA (slider puzzle)
-
-Assessment: HARD
+Keys matching 'starsCount':
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[0].starsCount = 30801
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[1].starsCount = 2264
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[2].starsCount = 15996
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[3].starsCount = 4163
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[4].starsCount = 25874
+  json_blocks[5].data.payload.orgReposPageRoute.repositories[5].starsCount = 141153
 ```
 
-It deliberately distinguishes a vendor being **present** from **engaged** — a bare `cf-ray` header
-means the site uses a common CDN, not that it fights bots. Conflating the two is the most common
-way these assessments go wrong, and it produces confident "this site is hard" verdicts about sites
-that are trivial.
+A JSON path and an exact value, with no DOM inspection. That last one is the argument for this
+approach: the page *renders* it as `141k`, so scraping the markup silently loses three digits and
+looks perfectly fine doing it. (Counts drift — that was a real run.)
 
-Detects Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF and F5; reCAPTCHA
-v2/v3, hCaptcha, Turnstile, Arkose and GeeTest.
+## What a skill here has to earn
 
-## Install
+Anyone can write instructions an agent will nod along to. These aim higher:
 
-Install everything in this repo:
+- **Runnable tools, not just prose.** Deterministic work belongs in a script the agent executes
+  rather than reasoning through. The bundled scripts use the standard library only — nothing to
+  install, nothing to break.
+- **Claims are verified, not asserted.** Where a skill says a site behaves a certain way, that was
+  checked against the live target. Where a claim turned out to be wrong, it was removed rather
+  than softened.
+- **Tested against real prompts.** Each skill carries eval cases in `evals/` written the way users
+  actually ask — including prompts whose premise is wrong, because the valuable answer is often
+  the one that corrects the question.
+- **Honest about scope.** A skill that says where it stops is worth more than one that improvises
+  past the edge of what it knows.
+- **The least powerful tool that works.** Recommending a headless browser for a job a plain HTTP
+  request handles is a failure, not caution.
+
+## Installing
+
+Install everything, to every detected agent, without prompts:
 
 ```bash
 npx skills add prashant-cr/skills --all
 ```
 
-Install one skill:
+Install one skill and choose interactively:
 
 ```bash
 npx skills add prashant-cr/skills --skill <skill-name>
 ```
 
-Useful flags:
-
 | Flag | Effect |
 | --- | --- |
 | `-g, --global` | Install user-level (`~/.agents/skills/`) instead of into the current project |
-| `-a, --agent <agents>` | Target specific agents; `'*'` for all |
+| `-s, --skill <skills>` | Install specific skills (`'*'` for all) |
+| `-a, --agent <agents>` | Target specific agents (`'*'` for all) |
 | `-l, --list` | List the skills in this repo without installing |
 | `-y, --yes` | Skip confirmation prompts |
 | `--copy` | Copy files instead of symlinking into agent directories |
+| `--all` | Shorthand for `--skill '*' --agent '*' -y` |
 
 Try a skill without installing it:
 
@@ -86,132 +94,40 @@ Try a skill without installing it:
 npx skills use prashant-cr/skills --skill <skill-name>
 ```
 
-## Available skills
-
-<!-- Add a row per skill. Keep this table in sync with skills/. -->
-
-| Skill | Description |
-| --- | --- |
-| [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a public website **before** you build a scraper: identifies bot-detection vendors (Cloudflare, Akamai, DataDome, HUMAN/PerimeterX, Kasada, Imperva, AWS WAF), CAPTCHA types, robots.txt rules and rendering mode, then recommends proportionate open-source tooling. |
-| [`fix-broken-scraper`](skills/fix-broken-scraper) | Diagnoses **why** a working scraper broke and repairs it one verified step at a time — separates stale selectors and site redesigns from real blocking, changed routing, expired sessions, and content that moved into embedded JSON. |
-| [`structured-data-extraction`](skills/structured-data-extraction) | Extracts data **without CSS selectors**, by reading what a page already publishes — JSON-LD, microdata, Open Graph, embedded state JSON, tables and feeds — and locating a field by name so you get a JSON path instead of guessing at DOM structure. |
-
-They cover the life of a scraping project: audit before you build, extract without brittle
-selectors, diagnose when something breaks.
-
-### scrape-feasibility-audit
-
-Answers *should we collect this, and what will it take* before anyone writes code.
+Update and remove:
 
 ```bash
-npx skills add prashant-cr/skills --skill scrape-feasibility-audit
+npx skills update
+npx skills remove <skill-name>
 ```
-
-Bundled `scripts/probe_site.py` runs standalone with no third-party dependencies:
-
-```bash
-python3 skills/scrape-feasibility-audit/scripts/probe_site.py https://example.com/products
-python3 skills/scrape-feasibility-audit/scripts/probe_site.py https://example.com --json
-```
-
-It reads robots.txt before fetching the page, declines robots-disallowed paths unless given
-`--force`, paces its requests, and sends an honest User-Agent. It reports vendors as *engaged*
-only when a scoring cookie or challenge script is present — a bare `cf-ray` means the site uses
-a CDN, not that it fights bots.
-
-Scope is public, unauthenticated content. It does not cover defeating CAPTCHAs that gate
-content, bypassing authentication or paywalls, or evading sites that have refused automated
-access; where an audit lands there, it says so and points at the sanctioned path instead.
-
-### fix-broken-scraper
-
-Most "I'm being blocked" reports aren't blocking. The page returns 200 and the selectors stopped
-matching — but *blocked* is the loudest hypothesis, so people add browsers and proxies that cost
-memory and maintenance forever and never touch the actual fault.
-
-This classifies the failure first, then repairs one verified step at a time.
-
-```bash
-npx skills add prashant-cr/skills --skill fix-broken-scraper
-```
-
-```console
-$ python3 diagnose.py https://github.com/orgs/vercel/repositories --selector "li.repo-list-item"
-
-Checks
-  [ok] connect: HTTP 200 in 0.87s
-  [ok] plain request accepted: status 200
-  [!!] selector 'li.repo-list-item' matches: 0 element(s)
-
-Embedded data: 6 application/json script block(s)
-
-Diagnosis: CONTENT MOVED INTO EMBEDDED JSON
-  'li.repo-list-item' matches nothing, but the page ships data in 6 application/json
-  script block(s). The content is in the response — it is no longer in the markup you
-  were parsing.
-
-Next steps
-  1. Parse the JSON blob directly instead of the rendered markup. It is both more
-     stable and cheaper than any browser.
-  2. Do not add a headless browser for this: it would render JSON you already have.
-```
-
-It distinguishes nine failure classes — `target intact`, `selectors stale`, `content moved into
-embedded JSON`, `client-rendered`, `routing changed`, `header-level filtering`, `blocked`,
-`transport`, `content changed or removed` — and gives next steps for that class only. When a plain
-request looks blocked it retries once with browser headers; same IP and TLS stack, only headers
-differ, so the difference isolates header-level filtering from something deeper.
-
-`--selector` accepts tag, `.class`, `#id` and descendant chains, matched with the standard library
-so there is nothing to install.
-
-### structured-data-extraction
-
-Selectors break because markup was never meant to be an interface. The same pages usually publish
-typed data alongside it — JSON-LD for search engines, Open Graph for link previews, their own state
-as JSON for the frontend — which sites keep working because breaking it costs them traffic.
-
-```bash
-npx skills add prashant-cr/skills --skill structured-data-extraction
-```
-
-Survey what a page publishes, then locate a field by name:
-
-```console
-$ python3 extract.py https://github.com/orgs/vercel/repositories --find starsCount
-
-Keys matching 'starsCount':
-  json_blocks[5].data.payload.orgReposPageRoute.repositories[0].starsCount = 4148
-  json_blocks[5].data.payload.orgReposPageRoute.repositories[1].starsCount = 25859
-  json_blocks[5].data.payload.orgReposPageRoute.repositories[2].starsCount = 141146
-```
-
-That's a JSON path and an exact value, with no DOM inspection. Note `141146` — the rendered page
-shows `141k`, so the markup route silently loses three digits. Structured data is usually *more*
-accurate than the text, not just more stable.
-
-Reads JSON-LD (with `@graph` flattened and `@type` filtering), schema.org microdata, Open Graph and
-meta tags, `application/json` script blocks, `window.__NEXT_DATA__`-style state, HTML tables and
-RSS/Atom feeds. Works on a saved file with `--file`. When a page genuinely publishes nothing, it
-says so and suggests where to look instead.
 
 ## Repository layout
 
 ```
 skills/
-  <skill-name>/
-    SKILL.md        # required: frontmatter + instructions
-    scripts/        # optional: executable helpers
-    references/     # optional: docs loaded on demand
-    assets/         # optional: templates, images, fonts
+  <skill-name>/           # flat: skills/my-skill/SKILL.md
+    SKILL.md              # required: frontmatter + instructions
+    scripts/              # optional: executable helpers
+    references/           # optional: docs loaded on demand
+    evals/                # optional: test cases for the skill
+    assets/               # optional: templates, images, fonts
+  <category>/<skill-name>/  # or catalogued: skills/web-scraping/my-skill/SKILL.md
 template/
-  SKILL.md.template # starting point for a new skill (not itself a skill)
-scripts/            # repo tooling
+  SKILL.md.template       # starting point for a new skill (not itself a skill)
+scripts/                  # repo tooling
 ```
 
-There is deliberately **no `SKILL.md` at the repository root** — one there would make the CLI treat the entire repo as a single skill and hide everything under `skills/`.
+The CLI discovers skills at exactly those two depths. Anything deeper is invisible without
+`--full-depth`.
 
-The template is named `SKILL.md.template` rather than `SKILL.md` because the CLI scans `template/` too; a file named `SKILL.md` there gets published as a real, installable skill.
+Two traps worth knowing if you fork this:
+
+- There is deliberately **no `SKILL.md` at the repository root**. A shallower `SKILL.md` wins, so
+  one there makes the CLI treat the whole repo as a single skill and hides everything under
+  `skills/`.
+- The template is named `SKILL.md.template`, not `SKILL.md`. Being outside `skills/` is not enough
+  to hide it — the CLI scans sibling directories too, and a `template/SKILL.md` gets published as
+  an installable placeholder skill.
 
 ## Adding a skill
 
@@ -221,7 +137,10 @@ cp template/SKILL.md.template skills/my-new-skill/SKILL.md
 python3 scripts/validate_skills.py
 ```
 
-Then fill in `skills/my-new-skill/SKILL.md`. The `name` in the frontmatter must match the directory name, and the `description` must say both what the skill does and when it should trigger.
+The `name` in the frontmatter must match the directory name. The `description` is the entire
+triggering mechanism — it is the only part of a skill always resident in an agent's context, so it
+has to say both what the skill does *and* the concrete phrases that should summon it. Agents
+systematically under-trigger skills; a vague description is the usual reason.
 
 ## Validate
 
@@ -234,7 +153,14 @@ No dependencies required. Exits non-zero on any problem.
 
 ## Publishing
 
-skills.sh indexes public GitHub repositories automatically — there is no submission step or manifest to file. Push to a public repo and the skills become installable by `owner/repo`. The skills.sh leaderboard ranks by anonymous install telemetry from the `skills` CLI, so a skill's placement follows real installs.
+Installability and discoverability are different things, and only the first is automatic.
+
+Push to a public GitHub repo and the skills are immediately installable by `owner/repo` — the CLI
+reads GitHub directly, with no registry in between, no submission form and no approval queue.
+
+Appearing in `npx skills find` or on the skills.sh leaderboard is separate, and is driven purely by
+anonymous install telemetry from the CLI. Nothing in a repository changes that ranking; only real
+installs do.
 
 ## License
 
