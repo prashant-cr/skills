@@ -10,8 +10,15 @@ to follow, and what to check before claiming it worked.
 Works with Claude Code, Cursor, GitHub Copilot, Codex, Gemini CLI, Windsurf and 20+ other agents.
 
 ```bash
-npx skills add prashant-cr/skills
+# see what's here
+npx skills add prashant-cr/skills --list
+
+# install just the one you want
+npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
+
+Skills are independent — take one, take all five. See [Installing](#installing) for the difference
+between picking one and taking the lot.
 
 ## Available skills
 
@@ -73,17 +80,37 @@ Anyone can write instructions an agent will nod along to. These aim higher:
 
 ## Installing
 
-Install everything, to every detected agent, without prompts:
+**Just one skill** — the common case, since the skills are independent and span different domains:
+
+```bash
+npx skills add prashant-cr/skills --skill stock-deep-dive
+```
+
+Several at once, comma-separated:
+
+```bash
+npx skills add prashant-cr/skills --skill stock-deep-dive,news-stock-impact
+```
+
+**Everything**, to every detected agent, without prompts:
 
 ```bash
 npx skills add prashant-cr/skills --all
 ```
 
-Install one skill and choose interactively:
+One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills --skill <skill-name>
+npx skills add prashant-cr/skills     # <- installs ALL five when run inside a coding agent
 ```
+
+Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,
+prints `Agent detected — installing non-interactively`, and installs every skill in the repo to
+every agent it finds — no picker, no confirmation. Use `--skill` when you want one, and `--list`
+when you only want to look.
+
+Skills land in `./.agents/skills/` in the current project, with symlinks into each agent's own
+directory. Add `-g` to install user-level in `~/.agents/skills/` instead.
 
 | Flag | Effect |
 | --- | --- |
