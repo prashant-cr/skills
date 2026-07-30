@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all six. See [Installing](#installing) for the difference
+Skills are independent — take one, take all seven. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -40,6 +40,12 @@ selectors, diagnose when something breaks.
 | [`news-stock-impact`](skills/news-stock-impact) | Turns today's news into a ranked shortlist of listed companies genuinely **exposed** to it — the event, the transmission mechanism to a revenue or cost line, how much the stock has *already* moved, and what would invalidate the idea. Any market, any cap. |
 | [`stock-deep-dive`](skills/stock-deep-dive) | Full fundamental analysis of one company — business, moat, earnings quality, management, and **what the current price already implies** — scored 0–10 across six dimensions, with bull/base/bear scenarios and separate verdicts for the long term and the next year. |
 | [`ipo-rating`](skills/ipo-rating) | Rates an IPO and says whether to apply — scoring the business, valuation against listed peers, and the fresh-issue vs offer-for-sale split. Gives **two separate verdicts**, listing-day gain and long-term hold, because they often disagree. Reads grey market premium and subscription data, and maps the lock-in expiries. |
+
+### Health & nutrition
+
+| Skill | What it does |
+| --- | --- |
+| [`weight-loss-diet-plan`](skills/weight-loss-diet-plan) | Builds a fat-loss diet someone will still be eating in week five — **intake first**, then computed calorie and protein targets, a template day, a full seven-day menu, and the shopping list. Handles vegetarian, vegan, eggetarian and other patterns honestly, including the protein arithmetic that quietly sinks most plant-based plans. Ships the **adjustment rules** for when the scale stalls, because that is where plans actually fail. |
 
 ## See one in action
 
@@ -102,7 +108,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL six when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL seven when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,
