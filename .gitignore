@@ -8,3 +8,4 @@ skills-lock.json
 # skill-creator eval artifacts
 .eval-workspace/
 history.json
+.launch-posts.md

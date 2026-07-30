@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all eight. See [Installing](#installing) for the difference
+Skills are independent — take one, take all nine. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -40,6 +40,7 @@ selectors, diagnose when something breaks.
 | [`news-stock-impact`](skills/news-stock-impact) | Turns today's news into a ranked shortlist of listed companies genuinely **exposed** to it — the event, the transmission mechanism to a revenue or cost line, how much the stock has *already* moved, and what would invalidate the idea. Any market, any cap. |
 | [`stock-deep-dive`](skills/stock-deep-dive) | Full fundamental analysis of one company — business, moat, earnings quality, management, and **what the current price already implies** — scored 0–10 across six dimensions, with bull/base/bear scenarios and separate verdicts for the long term and the next year. |
 | [`ipo-rating`](skills/ipo-rating) | Rates an IPO and says whether to apply — scoring the business, valuation against listed peers, and the fresh-issue vs offer-for-sale split. Gives **two separate verdicts**, listing-day gain and long-term hold, because they often disagree. Reads grey market premium and subscription data, and maps the lock-in expiries. |
+| [`crypto-rating`](skills/crypto-rating) | Rates a crypto asset **on live data only** — it fetches and cross-checks the price against three venues and refuses to proceed on a stale feed, because a remembered crypto price is wrong by a multiple, not by a little. Screens new or thin tokens for rug patterns *before* rating anything, does the dilution and unlock arithmetic, then turns **your** capacity for loss into a maximum position size with the crash shown in money. Two verdicts, hold and entry, because they disagree. |
 
 ### Documents
 
@@ -114,7 +115,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL eight when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL nine when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,

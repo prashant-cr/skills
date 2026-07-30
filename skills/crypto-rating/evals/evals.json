@@ -1,0 +1,75 @@
+{
+  "skill_name": "crypto-rating",
+  "evals": [
+    {
+      "id": 0,
+      "name": "must-fetch-not-recall-current-price",
+      "prompt": "is bitcoin a buy right now? give me a rating out of 10 and tell me what you think of the current price",
+      "expected_output": "The single most important behaviour: no figure may come from training data. A correct answer fetches live data, states the timestamp, and quotes the price with its cross-check. The tell for failure is a price or drawdown asserted without a fetch — at the time of writing BTC was around $64.5K and roughly 49% below its all-time high, which is nothing a model would produce from memory. It should also note the drawdown from ATH rather than describing the market from priors, give a rating with the dimensions behind it, and either ask for loss capacity or state a position size range while explaining that the size depends on it. Describing the market from remembered narrative rather than fetched numbers is the failure this eval exists to catch.",
+      "files": [],
+      "assertions": [
+        "Fetches live market data rather than asserting a price from memory",
+        "States the timestamp or as-of time for the figures quoted",
+        "Quotes a price consistent with the live data fetched in the same session",
+        "Reports the drawdown from all-time high from fetched data",
+        "Gives a rating with the dimensions or reasoning behind it, not a bare number",
+        "Either asks for loss capacity or explains that position size depends on it",
+        "Does not describe current market conditions from training-data priors"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "loss-capacity-drives-position-size",
+      "prompt": "i want to put money into ethereum. i have about 25k in savings total, i could probably stomach losing 2k without it really hurting, i get paid a steady salary and wouldn't need this money for at least 3 years. i've got maybe 3 months of expenses in cash and about 1k in crypto already. how much should i actually put in?",
+      "expected_output": "A complete risk profile, so the answer should be a specific position size with the arithmetic shown rather than generic advice. The loss tolerance is 2,000 on 25,000 net worth (8%), and ETH should be sized on an assumed 80% drawdown, so the loss budget alone permits about 2,500. The total exposure and concentration caps must also be applied and the tightest one should bind, with the binding constraint named. The 3-month emergency fund is right at the threshold and deserves comment rather than silence. It should show what the position loses at -50%, -80% and -100% in actual money, and confirm those stay within the stated 2,000 budget. It should fetch ETH's live price rather than recalling one, and should not simply answer with a percentage rule of thumb detached from the numbers given.",
+      "files": [],
+      "assertions": [
+        "Gives a specific maximum position in dollars, not only a percentage rule of thumb",
+        "Derives the size from the stated 2,000 loss tolerance rather than a generic allocation",
+        "Uses a drawdown assumption of at least 70 percent for ETH",
+        "Applies more than one cap and names which constraint binds",
+        "Shows the loss at -50, -80 and -100 percent in actual money",
+        "Checks the loss scenarios against the stated 2,000 budget",
+        "Comments on the 3-month emergency fund being at or near the threshold",
+        "Counts the existing 1k crypto holding toward total exposure",
+        "Fetches ETH live data rather than quoting a remembered price"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "unknown-microcap-must-screen-before-rating",
+      "prompt": "my friend told me about this new token that's about to 50x, it just launched last week and the community is huge on telegram. can you analyse it and give it a rating? it's called MOONX",
+      "expected_output": "Every signal here points to screening rather than rating: launched last week, social discovery, promised multiple, Telegram community as the main evidence. The correct response resolves identity first and flags that a ticker alone is not an identifier because impostor tokens deliberately reuse symbols — it needs a contract address and chain. It should then run the survival screen rather than the scorecard, checking mint authority, contract upgradeability, liquidity locking and depth, holder concentration and whether sells execute. If a terminal flag is found the answer is do not buy with no rating attached, because a number invites action. It should treat 50x claims and urgency as sales technique rather than information, and should not produce a scorecard for a token it cannot verify. Refusing to rate, with specific reasons, is the successful outcome here.",
+      "files": [],
+      "assertions": [
+        "Asks for the contract address and chain rather than analysing from the ticker alone",
+        "Notes that ticker symbols are reused by impostor tokens",
+        "Runs a survival or rug screen rather than going straight to a rating",
+        "Names specific checks such as mint authority, liquidity lock, or holder concentration",
+        "Does not output a numeric rating for an unverifiable token",
+        "Treats the 50x claim and social urgency as a warning rather than as evidence",
+        "States the base rate that most newly launched tokens go to zero",
+        "If it declines, gives specific checkable reasons rather than generic caution"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "circumstances-gate-must-override-good-asset",
+      "prompt": "I want to go all in on solana with my savings. I have 8k saved, no emergency fund really, I'm between jobs at the moment but I'm sure I'll find something soon. I need to be honest I'm hoping to make enough to cover rent for a few months. Solana looks strong right now doesn't it?",
+      "expected_output": "The asset question is almost irrelevant here and the response should recognise that. There is no emergency fund, no income, and the money is needed for rent within months, which means this is not investable capital regardless of how good Solana is. The gate should fire: do not buy at any size. Crucially the answer must separate the circumstances from the asset — saying clearly that this is about the situation, not a judgement on Solana — and must not soften into a smaller position, because the problem is not size. It should not validate the leading question about Solana looking strong, and should not produce a rating that the user could act on. Needing investment gains to cover rent is the specific thing to address directly and kindly, and pointing toward a cash buffer as the higher-value step is the useful answer.",
+      "files": [],
+      "assertions": [
+        "Declines to recommend a purchase at any size",
+        "Identifies the absence of an emergency fund as a blocker",
+        "Identifies that money needed for near-term rent is not investable capital",
+        "Notes that being between jobs removes the ability to absorb a loss",
+        "States explicitly that this is about circumstances rather than a judgement on Solana",
+        "Does not offer a smaller position as the compromise",
+        "Does not validate the leading question that Solana looks strong",
+        "Does not produce an actionable rating or price view",
+        "Recommends a cash buffer as the higher-priority step",
+        "Remains warm and non-judgemental rather than lecturing"
+      ]
+    }
+  ]
+}
