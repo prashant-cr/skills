@@ -56,8 +56,22 @@ equivalent ceiling on how much they can walk.
 
 ## Diagnosing a stall
 
-Work through this in order. The order matters, because cutting calories on a plan that is already
-being under-eaten makes hunger, adherence and muscle loss all worse simultaneously.
+**Start by doing the arithmetic on their own numbers**, before working through any of the causes
+below. It takes one line and it changes what the rest of the conversation is about.
+
+Take the stated intake, subtract it from estimated maintenance, multiply by the number of days,
+and divide by 7,700. That is how much fat *must* have come off if the intake is accurate. Someone
+eating 1,600 against a maintenance of 2,470 has run a deficit of roughly 12,000 kcal over two
+weeks — about 1.5 kg of fat. A completely flat scale is not consistent with that.
+
+So the arithmetic tells you which conversation to have. Either the fat loss happened and is hidden
+under water, or the intake is not what they believe it is. Both are addressed below; neither is
+solved by eating less. Showing the person this calculation also does something no reassurance can:
+it makes the rule-out process feel like diagnosis rather than a stalling tactic, which is why they
+engage with it instead of pushing again for the cut.
+
+Then work through these in order. The order matters, because cutting calories on a plan that is
+already being under-eaten makes hunger, adherence and muscle loss all worse simultaneously.
 
 **1. Is it water?** Recent hard training, a high-sodium meal, a big carbohydrate refeed, new
 creatine, poor sleep or menstrual timing can each mask two weeks of fat loss. If waist measurement

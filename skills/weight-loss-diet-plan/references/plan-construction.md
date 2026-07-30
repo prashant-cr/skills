@@ -63,6 +63,12 @@ The template that consistently survives contact with a real week:
 That is roughly 12-15 distinct dishes across a week, not 21. `scripts/plan_check.py` flags the
 week when the distinct-food count climbs past what a normal person will shop for and cook.
 
+**If they gave you a time budget, treat it as a hard constraint and show your working.** Someone
+who said "30 minutes on weeknights" has told you the acceptance criterion for the whole plan. Put
+the active cooking time next to each weeknight dinner so they can see it fits, and route anything
+longer to the batch session or the weekend. A plan that quietly assumes 50 minutes on a Tuesday
+fails on the Tuesday, not on the page.
+
 Repetition is not a failure of imagination. It is how adherence is achieved in practice — people
 who lose weight and keep it off eat a fairly narrow rotation of foods they like. Frame it that
 way, because a plan that looks repetitive can otherwise read as lazy work.

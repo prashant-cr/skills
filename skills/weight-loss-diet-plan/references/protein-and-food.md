@@ -8,6 +8,8 @@ Read this while building the template day, and again when someone asks to swap s
 - [Protein density table](#protein-density-table)
 - [What this means per diet pattern](#what-this-means-per-diet-pattern)
 - [The vegan arithmetic problem](#the-vegan-arithmetic-problem)
+  - [The micronutrients that actually need attention](#the-micronutrients-that-actually-need-attention)
+  - [Hidden animal ingredients](#hidden-animal-ingredients)
 - [Swapping without recalculating](#swapping-without-recalculating)
 - [Satiety and fibre](#satiety-and-fibre)
 - [Supplements](#supplements)
@@ -144,11 +146,51 @@ The way out is to lean on the concentrated end rather than eating more of the sa
 - **A protein powder** for the last 20-30 g. There is no nutritional prize for refusing it, and
   the plans that hit their targets usually include one.
 
-Two secondary points. Plant proteins are individually lower in specific essential amino acids, but
-this resolves itself across a varied day — the old "combine at every meal" rule is not supported
-and is not worth the complexity. Do flag **B12** (supplementation is necessary, not optional),
-and keep an eye on **iron, zinc, iodine, omega-3 and calcium**, which are the ones that get thin
-when a vegan diet is also calorie-restricted.
+One secondary point on amino acids: plant proteins are individually lower in specific essential
+amino acids, but this resolves itself across a varied day — the old "combine at every meal" rule is
+not supported and is not worth the complexity.
+
+### The micronutrients that actually need attention
+
+A vegan diet and a calorie deficit are each survivable; together they squeeze the same few
+nutrients. Generic "watch your iron" is useless, so give the actionable version:
+
+- **B12** — supplementation is necessary, not optional. Not a preference, not covered by a varied
+  diet. Say it plainly.
+- **Iron** — the non-haem form absorbs poorly. Pair iron-containing meals with vitamin C (lemon,
+  tomato, capsicum, citrus) and keep tea and coffee away from those meals by an hour or so, since
+  the tannins meaningfully inhibit absorption. This timing change is free and does more than
+  switching foods.
+- **Calcium** — buy **fortified** plant milk and yogurt and check the label, because unfortified
+  versions have almost none. This is the easiest gap to open by accident, since the two products
+  look identical on the shelf.
+- **Iodine** — plant diets are commonly low. Iodised salt or a supplement; seaweed works but the
+  dose is wildly variable, so it's a poor primary source.
+- **Omega-3** — flax, chia and walnuts give ALA, which converts to EPA and DHA inefficiently. An
+  algal oil supplement is the direct route if they want one.
+- **Zinc** — legumes and seeds cover it, but phytates reduce absorption; soaking, sprouting and
+  fermenting help.
+
+### Hidden animal ingredients
+
+Worth a short list, because a plan can be scrupulously vegan on its own terms and still get
+undone by a restaurant dish or a packet. The ones that catch people:
+
+- **Miso soup and most Japanese broths** — normally made with bonito (fish) dashi, including
+  instant sachets. Ask for or buy a kombu-only version.
+- **Dal and Indian gravies** — frequently finished with ghee, cream or a cashew-cream paste; naan
+  usually contains milk or yogurt. A dal that reads vegan on the menu often isn't.
+- **Thai and South-East Asian dishes** — fish sauce and shrimp paste are in a great many curry
+  pastes and dressings.
+- **Bread and baked goods** — whey, milk powder and eggwash are common.
+- **Anything gelled** — gelatin in sweets, marshmallows, some yogurts and capsules.
+- **Parmesan and similar hard cheeses** — animal rennet, so not vegetarian either, which surprises
+  long-time vegetarians.
+- **Worcestershire sauce, Caesar dressing, some kimchi** — anchovy.
+- **Wine, beer and cider** — occasionally fined with isinglass or gelatin.
+
+For a vegetarian rather than vegan plan, the rennet and gelatin items are the ones that matter;
+the dairy and egg entries obviously don't.
 
 ## Swapping without recalculating
 

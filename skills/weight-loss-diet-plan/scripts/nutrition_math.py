@@ -210,10 +210,18 @@ def compute(intake):
     if goal:
         goal = float(goal)
         if goal < 18.5 * height_m ** 2:
-            warnings.append(
-                f"Goal weight of {goal} kg is below a BMI of 18.5 for this height. "
-                "Say so, and suggest a goal at or above "
-                f"{18.5 * height_m ** 2:.0f} kg."
+            # A stop, not a warning. Targets computed here would be a deficit
+            # aimed at an underweight endpoint, and half-meeting an unsafe goal
+            # ratifies it — see the "do not negotiate" note in SKILL.md.
+            stop = (
+                f"Goal weight of {goal:.0f} kg is a BMI of "
+                f"{goal / height_m ** 2:.1f} for this height, which is underweight. "
+                "Do not build a deficit toward it, and do not counter-offer a "
+                "slightly higher but still underweight figure. Say plainly that a "
+                f"goal at or above {18.5 * height_m ** 2:.0f} kg is the lowest "
+                "sensible one, and ask what they are actually trying to change — "
+                "it is usually body composition, which maintenance plus resistance "
+                "training serves better than any deficit."
             )
         to_lose = weight - goal
         if to_lose > 0 and actual_rate_kg > 0:

@@ -21,7 +21,11 @@ import sys
 from collections import Counter
 
 KCAL_TOLERANCE = 0.10        # a day may land within +/-10% of target
-PROTEIN_SHORTFALL_OK = 0.03  # protein is a floor; allow only rounding slack
+# Protein is a floor, so the only slack allowed is rounding on a single item.
+# An earlier version tolerated 3%, which sounds small and is not: on a 130 g
+# target it silently passed days at 127 g, so a plan could state a floor and
+# then miss it every day while the checker reported PASS. Absolute, not relative.
+PROTEIN_SHORTFALL_G = 0.5
 MIN_MEALS_AT_THRESHOLD = 3   # meals that should clear the per-meal protein mark
 PER_MEAL_PROTEIN_G = 20      # roughly the per-meal threshold worth hitting
 MAX_DISTINCT_DISHES = 22     # past this the week stops being shoppable
@@ -102,10 +106,11 @@ def check_day(day, targets):
 
     prot_t = targets.get("protein_g")
     if prot_t:
-        if totals["protein_g"] < prot_t * (1 - PROTEIN_SHORTFALL_OK):
+        if totals["protein_g"] < prot_t - PROTEIN_SHORTFALL_G:
             failures.append(
-                f"protein {totals['protein_g']:.0f} g is under the {prot_t:.0f} g "
-                f"floor by {prot_t - totals['protein_g']:.0f} g"
+                f"protein {totals['protein_g']:.1f} g is under the {prot_t:.0f} g "
+                f"floor by {prot_t - totals['protein_g']:.1f} g — either fix the day "
+                "or lower the stated floor, but do not claim the day clears it"
             )
         strong = sum(1 for _, m in per_meal if m["protein_g"] >= PER_MEAL_PROTEIN_G)
         if strong < MIN_MEALS_AT_THRESHOLD:

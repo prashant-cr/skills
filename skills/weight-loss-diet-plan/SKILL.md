@@ -63,6 +63,16 @@ Everyone else: build the plan. Say once, plainly, that this is general nutrition
 not a substitute for individual medical advice — then get on with being useful. Repeated hedging
 in every section reads as evasion and makes the plan harder to follow.
 
+**Do not negotiate an unsafe goal into a slightly-less-unsafe one.** This is the failure worth
+naming separately, because it feels like the reasonable middle path and it is the most harmful
+thing available here. Someone at 51 kg and 165 cm asking to reach 44 kg does not need a
+counter-offer of 48 kg — that is still underweight, and meeting them halfway ratifies the project
+and supplies the numbers to pursue it. It is worse still in combination: if you have just raised
+the possibility of disordered eating, handing over a calorie-counted plan in the next paragraph
+tells them the concern was decorative. Decline the deficit, then offer something genuinely
+different — maintenance, recomposition, resistance training — rather than a smaller version of
+what was asked for.
+
 ## Workflow
 
 ### 1. Run the intake in one message
@@ -195,6 +205,13 @@ wrong totals, and a plan whose protein column doesn't add up is worse than no pl
 person follows it precisely and gets the outcome the numbers were supposed to prevent.
 
 If a day fails, fix that day and re-run. Don't adjust the target to match the plan.
+
+**Never write a summary the totals don't support.** The temptation, once a week is nearly right,
+is to state that every day clears the protein floor because it very nearly does. A plan that
+claims a 130 g floor and delivers 127 g has told the person something false about the one number
+the whole plan is built to protect, and they have no way to catch it. If a day genuinely can't
+reach the floor, either fix it or state the floor you actually hit — both are honest, and the
+gap between the claim and the arithmetic is the thing that isn't.
 
 ### 6. Deliver it
 
