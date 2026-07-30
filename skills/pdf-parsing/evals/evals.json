@@ -1,0 +1,76 @@
+{
+  "skill_name": "pdf-parsing",
+  "evals": [
+    {
+      "id": 0,
+      "name": "scanned-pdf-must-not-report-empty",
+      "prompt": "i'm trying to get the transactions out of my bank statement pdf into excel but every library i try gives me back an empty string. pdfplumber returns nothing, pypdf returns nothing. is the file corrupt? it opens fine in preview and i can see all 12 pages of transactions",
+      "expected_output": "The described symptom — every extractor returning empty while the document displays correctly — is the definitive signature of a scanned PDF with no text layer. The correct answer identifies that immediately rather than suggesting more libraries or debugging the code, states that the file is not corrupt and that empty output is correct behaviour for a document containing only images of text, and routes to OCR. It should verify by classifying the file rather than asserting, name the tools needed (a rasteriser plus tesseract) and the install command if absent, set expectations on OCR time for 12 pages and on digit-level accuracy, and warn that financial figures from OCR need spot-checking against the page. Recommending a totals reconciliation is a strong answer.",
+      "files": [],
+      "assertions": [
+        "Identifies the PDF as scanned or lacking a text layer",
+        "States explicitly that the file is not corrupt and that empty output is expected, not a bug",
+        "Does not suggest trying additional text-extraction libraries as the fix",
+        "Recommends OCR as the route",
+        "Classifies or inspects the actual file rather than only reasoning from the description",
+        "Names the required tools and how to install them if missing",
+        "Warns that OCR misreads digits and financial figures need verification",
+        "Sets an expectation for how long OCR will take on 12 pages"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "tabular-pdf-to-excel-full-then-narrow",
+      "prompt": "can you parse this pdf and get the data into excel? /Users/me/Documents/vendor_price_list.pdf",
+      "expected_output": "A tabular document with no field list supplied. Per the intended behaviour the skill should extract everything and deliver a usable workbook on this turn rather than opening with a question about which columns are wanted, then show the real column names it found and offer to narrow or reshape. It must preserve layout so columns survive, verify the tables it detected rather than trusting them, and flag any table it considers sparse instead of presenting wrapped records as one-row-per-record. Identifier-like columns (product codes, SKUs, anything with leading zeros) must stay text in the workbook while prices and quantities become real numbers. If the file does not exist it should say so plainly rather than fabricating a parse.",
+      "files": [],
+      "assertions": [
+        "Delivers extracted output on this turn rather than only asking which fields are needed",
+        "Shows the actual column or field names found in the document",
+        "Offers to narrow or reshape after showing what was found",
+        "Preserves layout during extraction rather than using plain text extraction",
+        "Reports the shape of detected tables (rows and columns)",
+        "Flags sparse or wrapped tables rather than presenting them as clean rows",
+        "Keeps identifier-like columns as text and numeric columns as numbers",
+        "Produces a real xlsx without requiring pandas or openpyxl to be installed",
+        "Does not fabricate content if the file is missing or unreadable"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "prose-pdf-should-not-force-a-grid",
+      "prompt": "i need this 40 page consultancy agreement converted into a spreadsheet so i can track it. put every clause into excel please",
+      "expected_output": "The request names Excel but the content is prose, and a contract has no rows — forcing clauses into cells loses the clause hierarchy and produces something harder to read than the original. The right response does not silently refuse and does not silently substitute. It should explain in a sentence or two why a grid loses information here, then deliver something genuinely useful: the document form with the clause numbering preserved exactly, and, if a tracking spreadsheet is the real goal, a defensible tabular reading such as one row per clause with number, heading, obligation and page reference. Preserving the printed clause numbering matters because in a contract the numbering is the reference and renumbering breaks every citation. Offering both and letting the user choose is the strongest answer.",
+      "files": [],
+      "assertions": [
+        "Notes that prose does not map cleanly onto rows and columns",
+        "Does not refuse outright without offering a working alternative",
+        "Does not silently produce only a grid without comment",
+        "Offers a document form (markdown or docx) with structure preserved",
+        "Preserves the printed clause and section numbering exactly rather than renumbering",
+        "If it does produce a table, uses a defensible schema such as one row per clause with a page reference",
+        "Explains the trade-off in a sentence or two rather than at length",
+        "Leaves the choice with the user"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "batch-folder-must-account-for-every-file",
+      "prompt": "i have a folder with about 50 supplier invoices as pdfs, some are scanned and at least one is password protected i think. i need them all in one spreadsheet with invoice number, date, supplier and total so i can reconcile against our ledger",
+      "expected_output": "A batch job with known heterogeneity, and the user has named the fields they want, so those should be used rather than asked for again. The correct approach triages the folder first to group by type and surface the scanned and encrypted files before extracting anything, since that is what makes 50 files tractable. Every output row needs a source_file column, and every file must end up either in the data or in an explicit failure list with a reason — silently returning 47 rows from 50 files is the failure mode to avoid. It should try an empty user password on the encrypted file before asking, since owner-password-only PDFs are very common, and must not attempt to break a real password. Because invoices from different suppliers have different layouts, it should say that one column mapping may not fit all and group by layout if needed. Since the goal is ledger reconciliation, totals should be numeric and invoice numbers text, and it should mention what else was available beyond the four named fields.",
+      "files": [],
+      "assertions": [
+        "Triages the whole folder before extracting, and reports a breakdown by type",
+        "Uses the four fields the user named rather than asking which fields are wanted",
+        "Includes a source_file column identifying which PDF each row came from",
+        "Produces an explicit failure list with a reason per failed file",
+        "Accounts for every input file in either the data or the failure list",
+        "Tries an empty user password on the encrypted file before asking the user",
+        "Does not attempt to break or brute-force a genuine password",
+        "Notes that differing supplier layouts may need separate mappings",
+        "Keeps invoice numbers as text and totals as numbers",
+        "Mentions which additional fields were available beyond the four requested"
+      ]
+    }
+  ]
+}
