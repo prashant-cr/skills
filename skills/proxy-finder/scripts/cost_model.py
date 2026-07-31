@@ -193,7 +193,7 @@ def render(job, rows, months, variants):
     o = []
     pages = job["pages_per_month"]
     o.append(f"  Job          {pages:,} successful pages/month"
-             f"   {job.get('bytes_per_page', 0) / 1024:,.0f} KB/page"
+             f"   {job.get('bytes_per_page', 0) / 1000:,.0f} KB/page"
              f"   over {months} month(s)")
     if job.get("hourly_rate_usd"):
         o.append(f"  Your time    ${job['hourly_rate_usd']}/hour "
