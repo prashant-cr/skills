@@ -62,9 +62,23 @@ def parse_frontmatter(text):
     return fields, match.group(2), None
 
 
+# Filenames that are always an accident: an unquoted shell variable, a redirect
+# target, a glob that never expanded. One of these ($OUT, from an eval run writing
+# script output) reached a published release before this check existed, so every
+# installer got it.
+SUSPICIOUS_NAME = re.compile(r"^[$*?~]|[$`|;<>]")
+
+
 def validate_skill(skill_dir):
     """Return a list of error strings for one skill directory."""
     errors = []
+    for stray in sorted(skill_dir.rglob("*")):
+        if stray.is_file() and SUSPICIOUS_NAME.search(stray.name):
+            errors.append(
+                f"{stray.relative_to(REPO_ROOT)}: filename looks like a shell accident "
+                "(unquoted variable or redirect). Delete it -- it would ship to "
+                "everyone who installs this skill."
+            )
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
         return [f"{skill_dir}: SKILL.md not found"]
