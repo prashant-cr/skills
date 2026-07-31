@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all nine. See [Installing](#installing) for the difference
+Skills are independent — take one, take all ten. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -29,9 +29,10 @@ between picking one and taking the lot.
 | [`scrape-feasibility-audit`](skills/scrape-feasibility-audit) | Audits a site **before** you build a scraper — bot-detection vendor, CAPTCHA type, robots.txt rules, server- or client-rendered — then recommends tooling proportionate to what it actually found. |
 | [`structured-data-extraction`](skills/structured-data-extraction) | Extracts data **without CSS selectors**, by reading what a page already publishes: JSON-LD, microdata, Open Graph, embedded state JSON, tables and feeds. Find a field by name, get a JSON path. |
 | [`fix-broken-scraper`](skills/fix-broken-scraper) | Diagnoses **why** a scraper broke and repairs it one verified step at a time — separating stale selectors from real blocking, changed routing, and content that moved into embedded JSON. |
+| [`proxy-finder`](skills/proxy-finder) | Works out what proxy or scraping infrastructure a site actually needs and what it will really cost. **Measures before it recommends** — probes the target, checks robots.txt for your paths, weighs the pages — because the most expensive mistake here is silent: residential proxies work on everything, so nobody discovers the tier at a tenth the price would have worked too. Prices every route including the non-proxy ones on **total cost with retries and engineering time**, and refuses to rank a price it couldn't verify. |
 
-Together they cover the life of a scraping project: audit before you build, extract without brittle
-selectors, diagnose when something breaks.
+Together they cover the life of a scraping project: audit before you build, cost the
+infrastructure, extract without brittle selectors, diagnose when something breaks.
 
 ### Markets & research
 
@@ -115,7 +116,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL nine when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL ten when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,
