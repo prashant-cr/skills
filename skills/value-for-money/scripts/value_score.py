@@ -109,6 +109,27 @@ def wilson_lower(pos, n, z=Z):
     return max(0.0, (centre - margin) / denom)
 
 
+def max_one_star_share(rating, n):
+    """Largest possible share of 1-star reviews consistent with a displayed average.
+
+    Works with no histogram at all, which is the case that matters -- marketplaces
+    frequently block the breakdown while showing the average and the count.
+
+    A displayed "4.8" is rounded, so the true star total sits in [(r-0.05)n,
+    (r+0.05)n]. The deficit from a perfect score is D = 5n - total, and each review
+    below five contributes at most 4 to it (a 1-star). So at most floor(D_max / 4)
+    reviews can be 1-star. Genuine products run 5-15% one-star; when the arithmetic
+    says even 5% is impossible, the distribution has no tail and that is the
+    signature the shape checks look for.
+
+    Derived by hand during an eval run when the script had no answer. It belongs here.
+    """
+    if not n or rating is None:
+        return None
+    deficit_max = n * (5.0 - rating + 0.05)
+    return max(0.0, math.floor(deficit_max / 4.0) / n)
+
+
 def histogram_flags(c):
     """Shape checks that a confidence interval cannot make.
 
@@ -130,12 +151,16 @@ def histogram_flags(c):
         # breakdown) sails through and ranks FIRST on price. Observed: a 4.8 from
         # 91 reviews was returned as "best value" over two far better-evidenced
         # options.
-        if rating is not None and n and n < 500 and rating >= 4.6:
-            return ([f"rating shape unknown -- {rating} from only {n:,} reviews with no "
-                     "star breakdown supplied. That average on that sample is the "
-                     "profile manufactured reviews have, and without the histogram it "
-                     "cannot be checked. Read the breakdown on the listing before "
-                     "treating this rating as evidence."], None)
+        cap = max_one_star_share(rating, n)
+        if cap is not None and cap < 0.05:
+            return ([f"no room for a normal tail -- {rating} across {n:,} reviews allows "
+                     f"at most {cap:.1%} one-star, arithmetically. Genuine products run "
+                     "5-15%. This is derivable from the average and the count alone, so "
+                     "it holds whether or not the breakdown is published."], None)
+        if rating is not None and n and n < 200 and rating >= 4.6:
+            return ([f"thin and clean -- {rating} from only {n:,} reviews with no star "
+                     "breakdown. Too few to be evidence and too high to be typical. "
+                     "Read the breakdown on the listing before trusting it."], None)
         return [], None
     vals = {int(k): float(v) for k, v in hist.items()}
     total = sum(vals.values())
