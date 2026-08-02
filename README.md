@@ -101,10 +101,11 @@ Anyone can write instructions an agent will nod along to. These aim higher:
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Several at once, comma-separated:
+Several at once — repeat the flag. A comma-separated list is **not** accepted and
+fails with `No matching skills found`, which reads like the skills are missing:
 
 ```bash
-npx skills add prashant-cr/skills --skill stock-deep-dive,news-stock-impact
+npx skills add prashant-cr/skills --skill stock-deep-dive --skill news-stock-impact
 ```
 
 **Everything**, to every detected agent, without prompts:
@@ -130,7 +131,7 @@ directory. Add `-g` to install user-level in `~/.agents/skills/` instead.
 | Flag | Effect |
 | --- | --- |
 | `-g, --global` | Install user-level (`~/.agents/skills/`) instead of into the current project |
-| `-s, --skill <skills>` | Install specific skills (`'*'` for all) |
+| `-s, --skill <name>` | Install one skill. Repeat the flag for several; commas do not work. `'*'` for all |
 | `-a, --agent <agents>` | Target specific agents (`'*'` for all) |
 | `-l, --list` | List the skills in this repo without installing |
 | `-y, --yes` | Skip confirmation prompts |
