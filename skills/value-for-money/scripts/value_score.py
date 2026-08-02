@@ -121,7 +121,21 @@ def histogram_flags(c):
     """
     hist = c.get("rating_histogram")
     n = c.get("review_count") or 0
+    rating = c.get("rating")
     if not hist:
+        # An absent histogram is missing evidence, not clean evidence. Without this
+        # the shape checks simply never run, positive_share falls back to a crude
+        # mean approximation, and Wilson barely penalises a small n -- so the exact
+        # profile these checks exist to catch (high average, thin sample, no
+        # breakdown) sails through and ranks FIRST on price. Observed: a 4.8 from
+        # 91 reviews was returned as "best value" over two far better-evidenced
+        # options.
+        if rating is not None and n and n < 500 and rating >= 4.6:
+            return ([f"rating shape unknown -- {rating} from only {n:,} reviews with no "
+                     "star breakdown supplied. That average on that sample is the "
+                     "profile manufactured reviews have, and without the histogram it "
+                     "cannot be checked. Read the breakdown on the listing before "
+                     "treating this rating as evidence."], None)
         return [], None
     vals = {int(k): float(v) for k, v in hist.items()}
     total = sum(vals.values())
