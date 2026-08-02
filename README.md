@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all ten. See [Installing](#installing) for the difference
+Skills are independent — take one, take all eleven. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -48,6 +48,12 @@ infrastructure, extract without brittle selectors, diagnose when something break
 | Skill | What it does |
 | --- | --- |
 | [`pdf-parsing`](skills/pdf-parsing) | Turns a PDF into data you can compute on. **Classifies the file first** — text layer, scanned, fillable form, encrypted — because pointing a text extractor at a scan returns an empty string rather than an error, and that silence is the bug people spend an afternoon on. Extracts text, tables and form fields with whatever toolchain is installed, OCRs when there's no text layer, and writes real multi-sheet `.xlsx` **with only the standard library**. One file or a whole folder, with every input accounted for in the data or in a failure list. |
+
+### Shopping
+
+| Skill | What it does |
+| --- | --- |
+| [`value-for-money`](skills/value-for-money) | Finds what's actually worth buying for **one person's use** — asks what the thing is for, then ranks on **cost of ownership**, not sticker price, because the cheap printer is the expensive one. Confidence-adjusts ratings for review count (a 4.3 from 4,000 beats a 4.8 from 60) and **excludes manufactured-looking review distributions** instead of rewarding them. Willing to answer *last year's model*, *refurbished*, *wait for the sale*, or *don't buy*. Knows Indian retail — seller warranty, GST invoice, grey imports, festive cycles. |
 
 ### Health & nutrition
 
@@ -117,7 +123,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL ten when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL eleven when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,

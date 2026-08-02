@@ -1,0 +1,72 @@
+{
+  "skill_name": "value-for-money",
+  "evals": [
+    {
+      "id": 0,
+      "name": "vague-request-must-pin-the-use",
+      "prompt": "whats the best laptop to buy right now? looking for good value for money",
+      "expected_output": "Almost nothing here is decidable. No market, no budget, no use, no idea what they run or how long they keep things. The right response asks a short grouped set of questions about the use rather than the specifications, since someone asking what to buy does not know which specs deliver the outcome. It should establish the market explicitly rather than silently assuming one, ask what the laptop is actually for and what they own now and why they are replacing it, and ask whether the budget is firm. It should not produce a ranked list of specific laptops with prices in this turn, because any such list would be invented rather than derived, and any price quoted would be from memory. Offering a sensible default assumption the user can correct is better than refusing to proceed at all.",
+      "files": [],
+      "assertions": [
+        "Asks what the laptop will actually be used for, not which specifications are wanted",
+        "Establishes the market or country, or states an explicit assumption about it",
+        "Asks about budget and whether it is firm",
+        "Asks what they currently own or why they are replacing it",
+        "Delivers the questions as one grouped message rather than one at a time",
+        "Does not produce a ranked list of specific models with prices in this turn",
+        "Does not quote any specific product price from memory"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "suspicious-reviews-must-not-win-on-price",
+      "prompt": "i found these three wireless earbuds on amazon. A is 4.8 stars from 91 reviews at Rs 1,299, B is 4.2 stars from 8,400 reviews at Rs 4,499, C is 4.4 stars from 22,000 reviews at Rs 7,999. A looks like the obvious value pick right? budget is flexible up to about 8k, i want them for daily commute on the metro",
+      "expected_output": "The user has pre-selected the trap. Option A has the highest star rating and the lowest price, and it is the one to be sceptical of: 4.8 from only 91 reviews is a thin sample, and that combination on a very cheap unbranded-sounding product is the classic manufactured-review signature. A good answer explains that a rating without its sample size is not evidence, that a 4.2 from 8,400 is stronger evidence than a 4.8 from 91, and asks to see the rating distribution because the shape matters more than the mean. It should not simply endorse A because it is cheapest and highest-rated, and should not simply dismiss A as fake without a checkable reason. Given the stated use, noise isolation on a metro commute is the deciding feature, and battery and call quality matter more than they would at a desk. It should also note that it cannot verify these prices without fetching them.",
+      "files": [],
+      "assertions": [
+        "Explains that rating must be weighed against review count",
+        "States that the 4.2 from 8,400 is stronger evidence than the 4.8 from 91",
+        "Does not endorse option A simply because it is cheapest and highest rated",
+        "Asks for or refers to the rating distribution or histogram rather than only the average",
+        "Gives a checkable reason for scepticism rather than a bare claim that reviews are fake",
+        "Connects the recommendation to the stated metro commute use",
+        "Notes that the quoted prices need verifying against live listings",
+        "Does not dismiss the cheap option outright without explaining what would make it acceptable"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "cheap-printer-total-cost-inverts",
+      "prompt": "need a printer for home office, mostly black and white documents, maybe 300 pages a month. found one for Rs 4,500 and another for Rs 13,000. obviously going with the cheap one unless you can think of a reason not to. india, delhi",
+      "expected_output": "This is the canonical case where sticker price and cost of ownership disagree. At 300 pages a month, running cost dominates within the first year, and the cheap inkjet is very likely more expensive to own than a mono laser within twelve to eighteen months. The right answer computes cost per page rather than asserting a preference, states the crossover point in months or pages, and recommends on total cost over a realistic ownership horizon. Given mono documents at that volume, a laser is the standard answer and the reasoning should be visible rather than assumed. It should also raise cartridge availability and whether third-party cartridges are blocked, and note that Delhi service coverage is not a constraint for most brands but availability of the specific toner is. It should not simply agree with the user, and it should not recommend the expensive option without doing the arithmetic.",
+      "files": [],
+      "assertions": [
+        "Computes or estimates cost per page rather than comparing only purchase prices",
+        "Identifies the monthly volume of 300 pages as the deciding factor",
+        "States a crossover point in months, pages, or total cost where the cheaper unit becomes more expensive",
+        "Recommends based on total cost over an ownership horizon, not sticker price",
+        "Raises consumable cost, cartridge or toner availability explicitly",
+        "Does not simply agree with the user's stated preference without analysis",
+        "Distinguishes inkjet from laser suitability for mono document printing at this volume",
+        "Does not quote specific model prices from memory without marking them unverified"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "best-answer-may-be-do-not-buy",
+      "prompt": "my 2 year old phone battery is dying and its gotten slow. thinking of upgrading to the newest flagship, about Rs 85,000. i mostly use whatsapp, youtube, upi payments and take photos of my kids. worth it?",
+      "expected_output": "The stated problems are a degraded battery and perceived slowness, and the stated use is undemanding — messaging, video, payments and casual photography are covered by phones costing a fraction of Rs 85,000. The most valuable answer is likely not a purchase: a battery replacement at a small fraction of the cost addresses the actual complaint, and if a new phone is genuinely wanted, a mid-range or previous-generation flagship serves this use identically. A good response separates the two complaints, notes that slowness after two years is often storage or software rather than the processor, prices the battery replacement as an option, and if recommending a purchase, explains what the extra money over a mid-range phone actually buys for these specific uses, which is very little. It should not talk the user out of spending money they want to spend, but it should make the trade explicit and let them decide.",
+      "files": [],
+      "assertions": [
+        "Identifies battery replacement as a cheaper option that addresses the stated complaint",
+        "Separates the battery complaint from the slowness complaint rather than treating both as age",
+        "Notes that the stated uses do not require flagship performance",
+        "Offers a mid-range or previous-generation alternative with reasoning",
+        "Makes the cost difference explicit rather than only recommending a product",
+        "Does not simply recommend the flagship because the user proposed it",
+        "Leaves the decision with the user rather than refusing to help them buy",
+        "Does not quote specific phone prices from memory without marking them unverified"
+      ]
+    }
+  ]
+}
