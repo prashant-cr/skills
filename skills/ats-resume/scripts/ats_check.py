@@ -441,7 +441,18 @@ def audit(path, jd_path=None, threshold=DEFAULT_THRESHOLD):
     # ---------- skills (10) ----------
     skill_lines = [norm(l) for l in sections.get("skills", []) if norm(l)]
     skill_blob = " ".join(skill_lines)
-    n_skills = len([s for s in re.split(r"[,;|•\n]", skill_blob) if len(s.strip()) > 1])
+    # Count line by line, and drop a leading group label. Joining the lines
+    # first and splitting the result merges the last item of one group with the
+    # next group's label -- "Scala Data: Apache Spark" counts as a single skill
+    # -- so the count silently penalised exactly the grouped format the rubric
+    # recommends.
+    skill_items = []
+    for line in skill_lines:
+        label, sep, rest = line.partition(":")
+        body_part = rest if sep and len(label.split()) <= 4 else line
+        skill_items += [s.strip() for s in re.split(r"[,;|•]", body_part)
+                        if len(s.strip()) > 1]
+    n_skills = len(skill_items)
     r.add("Skills listed as plain, comma-separated text",
           min(6, n_skills / 2.0) if skill_lines else 0, 6,
           f"{n_skills} skill tokens." if skill_lines else "No skills section content.")
