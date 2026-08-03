@@ -80,6 +80,18 @@ PERSONAL_NOISE = re.compile(
     r"passport\s+(?:no|number)|aadha?ar|languages\s+known\s*:\s*$)", re.I)
 DECLARATION = re.compile(r"^\s*declaration\b|i\s+hereby\s+declare", re.I)
 
+# Unresolved placeholders left in by a rewriting tool. These are worse than a
+# missing field: they inflate the score (a fake "linkedin.com/in/ADD-YOUR-HANDLE"
+# satisfies a link check) while making the file unsendable, and a candidate who
+# trusts the score will mail it out.
+PLACEHOLDER = re.compile(
+    r"\[[^\]]*(?:add|insert|replace|your|todo|tbd|fixme|placeholder|metric|x{2,})[^\]]*\]"
+    r"|\b(?:add|insert|replace)[-_ ]your[-_ ]?\w*"
+    r"|\byour[-_](?:handle|name|email|number|link|title)\b"
+    r"|\bx{4,}\b"
+    r"|\blorem\s+ipsum\b"
+    r"|\b(?:TODO|TBD|FIXME)\b", re.I)
+
 WEAK_OPENERS = re.compile(
     r"^(?:responsible\s+for|worked\s+on|helped\s+(?:with|to)|assisted\s+(?:with|in)|"
     r"tasked\s+with|duties\s+included|involved\s+in|part\s+of\s+(?:a\s+)?team)", re.I)
@@ -294,6 +306,14 @@ def audit(path, jd_path=None, threshold=DEFAULT_THRESHOLD):
         r.block("text_in_textboxes",
                 f"{flags['textbox_count']} text box(es) carry real content. Text boxes are a "
                 "separate story in the file and are routinely dropped.")
+    placeholders = sorted({norm(m.group(0))[:60] for m in PLACEHOLDER.finditer(body)})
+    if placeholders:
+        r.block("unresolved_placeholders",
+                f"The document still contains fill-in markers: {placeholders[:4]}. This is a "
+                "draft, not a resume. Placeholders also inflate this score -- a fake "
+                "'linkedin.com/in/ADD-YOUR-HANDLE' satisfies the profile-link check -- so a "
+                "candidate trusting the number could send it out as is.")
+
     para_in_tables = flags.get("paragraphs_in_tables", 0)
     total_paras = max(1, len([p for p in data["paragraphs"] if norm(p["text"])]))
     if para_in_tables / total_paras > 0.4:

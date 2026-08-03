@@ -164,7 +164,10 @@ def extract_pdf(path):
         except Exception:
             pass
 
-    pages = text.count("\f") + 1 if text else 0
+    # pdftotext terminates every page with a form feed, including the last, so
+    # counting separators and adding one overcounts by exactly one page.
+    # Extractors that emit no form feed at all fall back to one page.
+    pages = text.count("\f") or (1 if text.strip() else 0)
     return {
         "source": os.path.basename(path),
         "format": "pdf",

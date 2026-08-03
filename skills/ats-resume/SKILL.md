@@ -76,9 +76,20 @@ If almost no text comes out, the resume is an image — usually a Canva or Illus
 with text converted to outlines, or a scan. No rewriting helps; the candidate needs the source
 file or a retype. Say so plainly, because this is the single most expensive thing to miss.
 
-For a PDF with no text layer at all, `pdftotext` and `pypdf` will both come back empty. The
-`pdf-parsing` skill in this repository handles scanned documents if you need to recover content
-from one.
+Confirm that diagnosis rather than resting on an empty extraction, because *why* the file is
+empty changes what you tell the candidate. On a PDF, `pdffonts file.pdf` listing no fonts is
+conclusive: a page cannot draw a glyph without a font, so no fonts means no text, and the
+"characters" are vector outlines. `strings file.pdf | grep -c ' Tj\| TJ'` returning zero says
+the same thing from the other direction — those are the operators that draw text. A file that
+does have fonts but still extracts nothing is more likely encrypted or damaged, which is a
+different conversation and a recoverable one.
+
+Give the candidate a check they can run themselves: open the PDF and press Ctrl+F / Cmd+F for
+their own surname. No match means no ATS can read it either. That single test tends to land
+harder than any score, because they can repeat it on the next version.
+
+The `pdf-parsing` skill in this repository handles scanned documents if you need to recover
+content from one.
 
 ### 2. Score the original, so the candidate can see the change
 
