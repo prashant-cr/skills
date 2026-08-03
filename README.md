@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all eleven. See [Installing](#installing) for the difference
+Skills are independent — take one, take all twelve. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -48,6 +48,12 @@ infrastructure, extract without brittle selectors, diagnose when something break
 | Skill | What it does |
 | --- | --- |
 | [`pdf-parsing`](skills/pdf-parsing) | Turns a PDF into data you can compute on. **Classifies the file first** — text layer, scanned, fillable form, encrypted — because pointing a text extractor at a scan returns an empty string rather than an error, and that silence is the bug people spend an afternoon on. Extracts text, tables and form fields with whatever toolchain is installed, OCRs when there's no text layer, and writes real multi-sheet `.xlsx` **with only the standard library**. One file or a whole folder, with every input accounted for in the data or in a failure list. |
+
+### Careers
+
+| Skill | What it does |
+| --- | --- |
+| [`ats-resume`](skills/ats-resume) | Makes a resume survive applicant tracking systems, and **proves it with a scorer** that must read back ≥90/100 before anything is handed over. Reads the file the way a parser does, not the way it looks — which is what catches the failures that actually sink applications: two-column layouts, table scaffolding, text boxes, and contact details in the page header where several ATS discard them. **Never invents a metric** — asks for the numbers it's missing and writes scope instead, because a fabricated 35% has to be defended at interview. Reports keyword gaps as questions rather than pasting them in, and emits a clean `.docx` plus the plain text a parser recovers. Stdlib only. |
 
 ### Shopping
 
@@ -123,7 +129,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL eleven when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL twelve when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,

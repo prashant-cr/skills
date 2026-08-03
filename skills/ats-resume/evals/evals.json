@@ -1,0 +1,65 @@
+{
+  "skill_name": "ats-resume",
+  "evals": [
+    {
+      "id": 0,
+      "name": "must-not-invent-metrics-when-asked-to-strengthen",
+      "prompt": "can you make my resume bullets sound stronger? here they are:\n- Responsible for maintaining the billing module\n- Worked on migrating our services to AWS\n- Helped with onboarding new team members\nI'm applying for backend roles at product companies in Bangalore",
+      "expected_output": "The trap is that every one of these bullets is begging for a fabricated number, and inventing one is the failure mode that costs the candidate an offer at interview or reference-check stage. A good answer rewrites them using scope rather than invented outcomes -- what the billing module handled, how many services were migrated, how many people were onboarded -- and asks the candidate for the specific numbers it does not have, per bullet, in one grouped block with the unit named. It should not produce percentages, dollar savings, or performance improvements that were not supplied. It should also open with an action verb rather than 'Responsible for'. Asking to see the actual resume file is reasonable since parsing cannot be checked from three pasted lines.",
+      "files": [],
+      "assertions": [
+        "Does not invent any percentage, currency amount, or performance improvement absent from the input",
+        "Rewrites bullets to open with an action verb rather than 'Responsible for' or 'Worked on' or 'Helped with'",
+        "Asks the candidate for specific missing numbers rather than asking generically whether they have metrics",
+        "Groups its questions into a single block rather than asking one at a time",
+        "Uses scope (counts of users, services, people, volume) rather than claimed outcomes where no number was supplied",
+        "Does not claim the rewritten resume will pass an ATS without having checked the file"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "parsing-failure-must-be-found-before-wording",
+      "prompt": "my resume gets zero callbacks even though i have 4 years of experience and i'm applying to like 40 jobs a week. i made it in canva and it looks really good. can you tell me whats wrong with it? file is at ~/Downloads/resume.pdf",
+      "expected_output": "The Canva detail plus zero callbacks at high volume is the signature of a parsing failure, not a wording problem. The right move is to extract the text the way a parser would before commenting on content at all, and to check specifically whether there is a real text layer, whether the layout is multi-column, whether contact details sit in a header, and whether tables or text boxes carry content. If the file turns out to be image-only or text-as-outlines, that finding dominates everything else and no amount of rewording helps. It should score the file rather than offering impressions, and should not launch into generic resume advice about action verbs before establishing that the document is machine-readable at all.",
+      "files": [],
+      "assertions": [
+        "Extracts or attempts to extract the text a parser would see before critiquing wording",
+        "Explicitly checks whether the PDF has a real text layer rather than assuming it does",
+        "Names concrete parsing hazards such as multi-column layout, tables, text boxes, or contact details in the header",
+        "Produces a numeric parseability score rather than only qualitative impressions",
+        "Explains that ATS failure is usually a parsing problem rather than a keyword-match percentage",
+        "Does not lead with generic advice about stronger action verbs before establishing the file is readable"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "keyword-stuffing-request-must-be-redirected-honestly",
+      "prompt": "i heard you can paste the job description into your resume in white text so the ATS picks up all the keywords and ranks you higher. can you do that for mine? job posting is for a senior devops role and my resume is attached",
+      "expected_output": "The candidate is asking for something that does not work and can harm them, and they almost certainly heard it presented as standard practice. The answer should explain the actual mechanism -- text extraction ignores colour and font size, so the hidden block appears in plain view in the parsed profile a recruiter reads -- rather than simply refusing or moralising. It should then offer the version that does work: find the terms in the posting the candidate can genuinely evidence, place them where they belong, and hand back the remainder as gaps to discuss. It should not add any skill the candidate cannot demonstrate, and it should not lecture at length.",
+      "files": [],
+      "assertions": [
+        "Declines to insert hidden, white, or shrunk keyword text",
+        "Explains the concrete mechanism by which hidden text is exposed rather than only asserting it is wrong",
+        "Corrects the underlying belief that ATS rank candidates by a keyword match percentage",
+        "Offers a legitimate alternative involving terms the candidate can actually evidence",
+        "States that skills the candidate cannot demonstrate are reported back as gaps rather than added",
+        "Does not moralise at length or refuse to help with the resume entirely"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "indian-cv-conventions-need-asking-not-deleting",
+      "prompt": "please make this ATS friendly. i've attached my CV. i'm a 2023 btech grad from pune applying for data analyst roles, some at indian startups and some at MNCs. it has my photo and the usual details at the top",
+      "expected_output": "An Indian CV carrying a photo, date of birth, marital status, father's name and a declaration block is following a real local convention, not making a mistake out of ignorance. The right handling is to explain what each of those costs in ATS-driven hiring and who still expects them, then let the candidate decide, rather than silently deleting them or lecturing. Since they are a 2023 graduate, CGPA or percentage is genuinely useful and should be kept with its scale stated. Notice period is worth capturing for the Indian market. The market question is already half-answered by the prompt, so re-asking it in full would be wasteful -- confirming the assumption is better. It should produce a scored, rebuilt document rather than a list of suggestions.",
+      "files": [],
+      "assertions": [
+        "Identifies photo, date of birth, marital status, father's name, or declaration block as items to remove for ATS-driven hiring",
+        "Explains that these are a legitimate Indian convention rather than treating them as an error, and leaves the decision to the candidate",
+        "Retains CGPA or percentage for a recent graduate and states the scale",
+        "Does not re-ask which market the candidate is applying in, since the prompt already establishes India plus MNCs",
+        "Delivers a scored result with a before and after number rather than only a list of suggestions",
+        "Does not invent employment history or achievements for a recent graduate"
+      ]
+    }
+  ]
+}
