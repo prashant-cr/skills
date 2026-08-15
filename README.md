@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all twelve. See [Installing](#installing) for the difference
+Skills are independent — take one, take all thirteen. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -42,6 +42,12 @@ infrastructure, extract without brittle selectors, diagnose when something break
 | [`stock-deep-dive`](skills/stock-deep-dive) | Full fundamental analysis of one company — business, moat, earnings quality, management, and **what the current price already implies** — scored 0–10 across six dimensions, with bull/base/bear scenarios and separate verdicts for the long term and the next year. |
 | [`ipo-rating`](skills/ipo-rating) | Rates an IPO and says whether to apply — scoring the business, valuation against listed peers, and the fresh-issue vs offer-for-sale split. Gives **two separate verdicts**, listing-day gain and long-term hold, because they often disagree. Reads grey market premium and subscription data, and maps the lock-in expiries. |
 | [`crypto-rating`](skills/crypto-rating) | Rates a crypto asset **on live data only** — it fetches and cross-checks the price against three venues and refuses to proceed on a stale feed, because a remembered crypto price is wrong by a multiple, not by a little. Screens new or thin tokens for rug patterns *before* rating anything, does the dilution and unlock arithmetic, then turns **your** capacity for loss into a maximum position size with the crash shown in money. Two verdicts, hold and entry, because they disagree. |
+
+### Marketing & search
+
+| Skill | What it does |
+| --- | --- |
+| [`seo-audit`](skills/seo-audit) | Audits a site's SEO in depth, then says which keywords it can **actually win** and in what order to do the work. Crawls the live site so every finding carries a URL and an observed value — indexation blockers, canonicalisation splits, duplicate titles, orphan pages, soft 404s — instead of reciting a checklist. Judges keywords by **who currently ranks**, not by an invented difficulty score, because a forum thread in the top five is an opening and ten strong incumbents is a closed door. Mines Search Console for striking-distance queries and for the case everyone gets backwards: a page at position 3 with 1% click-through has a title problem, not a ranking problem. **Refuses to invent search volumes.** Sequences the plan by payback, so the cheap wins land before anyone writes a word of new content. |
 
 ### Documents
 
@@ -129,7 +135,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL twelve when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL thirteen when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,

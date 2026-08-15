@@ -1,0 +1,85 @@
+{
+  "skill_name": "seo-audit",
+  "evals": [
+    {
+      "id": 0,
+      "name": "crawl-must-produce-evidence-not-checklist",
+      "prompt": "can you do a full seo audit of https://books.toscrape.com and tell me whats wrong with it? give me the technical issues and what to fix first",
+      "expected_output": "This is the core case: a bare URL and a request for an audit. The answer has to be derived from actually crawling the site, not from a generic SEO checklist. Real findings on this site include no XML sitemap, no robots.txt, http and https both serving 200 without redirecting (host canonicalisation split), the homepage duplicated at / and /index.html with an identical title, no meta descriptions anywhere, no canonical tags, no structured data, and uncompressed HTML. Each finding should carry a URL or an observed value rather than a generality. Findings must be ordered by impact -- the canonicalisation and duplicate-content problems ahead of missing alt text -- and the answer should state how many pages were actually crawled rather than implying whole-site coverage. It should not invent search volumes, traffic numbers, or Core Web Vitals scores it did not measure.",
+      "files": [],
+      "assertions": [
+        "Actually crawls or fetches the site rather than describing SEO best practices generically",
+        "Reports specific findings with a URL or observed value attached as evidence",
+        "Identifies the duplicate homepage at / and /index.html, or the duplicate title across them",
+        "Identifies the missing XML sitemap or missing robots.txt",
+        "Identifies that http and https both serve 200 without redirecting, splitting the host signals",
+        "States the number of pages crawled AND explicitly acknowledges that pages beyond that were not covered",
+        "Includes an explicit section or statement of what was NOT checked or could not be measured",
+        "Does not state Core Web Vitals numbers, LCP, INP or CLS values it did not measure",
+        "Does not invent search volume figures or keyword difficulty scores",
+        "Separates findings that block indexing from cosmetic issues, rather than one flat severity",
+        "Names a single highest-priority first action rather than an undifferentiated top-N list",
+        "Flags at least one finding as possibly deliberate, or otherwise avoids asserting intent it cannot know"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "unwinnable-head-term-must-be-refused",
+      "prompt": "I just launched my site last month, it's a small online store selling handmade leather wallets. I want to rank #1 on google for \"leather wallets\" and \"mens wallets\" within 3 months. What's the plan to get there? Give me the keywords I should target.",
+      "expected_output": "The premise is wrong and the valuable answer corrects it. A one-month-old site with no authority cannot rank #1 for head terms like 'leather wallets' against Amazon, Etsy and established brands, and certainly not in three months. The response should say this plainly and briefly with a reason -- those SERPs are dominated by high-authority marketplaces and brands -- and then pivot to what is actually reachable: specific long-tail commercial terms where a new small site can compete, such as terms combining the craft, material, style, personalisation or use case. It should explain that winnability is judged by who currently ranks, and ideally propose checking those SERPs. It must not promise a position or a date, must not produce invented monthly search volumes or difficulty scores, and must not simply agree and hand over a plan for the head terms. It should still be useful and encouraging rather than only delivering bad news -- the point is to redirect the effort, not to refuse the request.",
+      "files": [],
+      "assertions": [
+        "States plainly that ranking #1 for the head terms in 3 months is not realistic for a one-month-old site",
+        "Gives a concrete reason based on who currently ranks or the authority gap, not a vague 'SEO takes time'",
+        "Pivots to specific long-tail or niche keyword suggestions the site could realistically win",
+        "Explains that winnability should be judged by examining the current search results for a term",
+        "Does not promise a specific ranking position or date",
+        "Does not present invented monthly search volume numbers as fact",
+        "Does not present invented keyword difficulty scores as fact",
+        "Does not simply accept the premise and deliver a plan to rank for the head terms",
+        "Remains constructive and gives the user an actionable path forward",
+        "Distinguishes commercial or transactional intent terms from purely informational ones"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "gsc-data-striking-distance-before-new-content",
+      "prompt": "Here's our search console export for last quarter (gsc_export.csv). We're planning to hire 3 writers to publish 40 new blog posts next quarter to grow organic traffic. Does that plan make sense, and what should we prioritise?",
+      "expected_output": "The export contains the answer and it contradicts the plan. There are queries sitting at positions 4-20 with high impressions and few clicks -- striking distance opportunities that need existing pages improved, not new ones. There is at least one page ranking in the top 3 with a click-through rate far below what that position should deliver, which is a title and description problem rather than a ranking problem, and it is the single cheapest win in the file. There is also a query where two different URLs both rank, which is cannibalisation splitting the signal. The right answer analyses the actual file rather than commenting on the plan in the abstract, and argues that publishing 40 new posts should not be the first move because existing pages with proven relevance will pay back far faster. It should not simply endorse the plan, and it should not reject content creation entirely -- the point is sequencing.",
+      "files": [
+        "gsc_export.csv"
+      ],
+      "assertions": [
+        "Actually analyses the provided CSV rather than answering in the abstract",
+        "Explicitly names the striking-distance set as the FASTEST or CHEAPEST lever available, not merely one option among several",
+        "Identifies the high-position low-CTR queries as a title or snippet problem rather than a ranking problem",
+        "Identifies at least one query where two different URLs both rank as cannibalisation",
+        "Names the specific competing URL pair for at least one cannibalised query",
+        "Argues that improving existing pages should come before publishing 40 new posts",
+        "Quantifies the opportunity using numbers traceable to the file rather than invented estimates",
+        "Labels any projected or estimated click figure as an estimate rather than stating it as fact",
+        "Provides a sequenced priority order with the new content placed after the existing-page work",
+        "Does not reject new content entirely, but places it correctly in the sequence",
+        "Does not simply endorse the plan to publish 40 new posts as the first priority"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "traffic-drop-needs-date-and-cause",
+      "prompt": "our organic traffic fell off a cliff about 3 weeks ago, dropped maybe 70%. we redesigned the site around then. what do i do?? losing money every day here",
+      "expected_output": "A sudden sitewide drop coinciding with a redesign is a technical diagnosis, not a content or keyword one, and the response should go straight there rather than delivering a general audit. The high-probability causes in rough order: a staging noindex or robots.txt Disallow pushed to production, redirects from old URLs missing or all pointing at the homepage, URL structure changed without 301s, content lost in the new templates, or pages now rendered client-side. The answer should give a concrete ordered checklist of things to check immediately, starting with the fastest and most catastrophic -- checking robots.txt and the noindex tag takes a minute and is the single most common cause. It should ask for or reference Search Console, particularly the Page Indexing report, to confirm. It should distinguish whether impressions or only clicks fell. It should convey urgency and specificity rather than a generic audit offer, and should not begin by recommending keyword research or content strategy.",
+      "files": [],
+      "assertions": [
+        "Treats the redesign as the probable cause rather than running a generic audit",
+        "Names checking for an accidental noindex tag or robots.txt Disallow as a first step",
+        "Raises missing or incorrect 301 redirects from old URLs to new ones",
+        "Warns against or asks about redirecting all old URLs to the homepage",
+        "Recommends checking Google Search Console, particularly index coverage or the Page Indexing report",
+        "Provides an ordered checklist starting with the fastest and highest-impact checks",
+        "Distinguishes a drop in impressions from a drop in clicks, or asks which occurred",
+        "Does not lead with keyword research, content strategy or link building",
+        "Offers to run or actually runs a crawl to diagnose, rather than only giving advice"
+      ]
+    }
+  ]
+}
