@@ -17,7 +17,7 @@ npx skills add prashant-cr/skills --list
 npx skills add prashant-cr/skills --skill stock-deep-dive
 ```
 
-Skills are independent — take one, take all thirteen. See [Installing](#installing) for the difference
+Skills are independent — take one, take all fourteen. See [Installing](#installing) for the difference
 between picking one and taking the lot.
 
 ## Available skills
@@ -65,7 +65,12 @@ infrastructure, extract without brittle selectors, diagnose when something break
 
 | Skill | What it does |
 | --- | --- |
+| [`lowest-price-finder`](skills/lowest-price-finder) | You know **what** you want — this finds **where** to buy it cheapest, and what you will actually pay. Ranks stores on **landed cost**, not sticker price: shipping, fees, duty, and the bank-card offer you can only use if you hold that card, because *an offer the buyer cannot use is not a discount*. Discounts cashback to what it is worth in hand, since store credit arriving in 60 days is not money off at checkout. Screens for the traps a price sort puts first — grey imports, counterfeit patterns, thin sellers, variant mismatches — treating an **implausibly low price as evidence of a problem, not a bargain**, and measuring it against a median built only from clean offers so a fake cannot normalise itself. Quotes no price it did not fetch, and says whether to buy now or wait for the sale. |
 | [`value-for-money`](skills/value-for-money) | Finds what's actually worth buying for **one person's use** — asks what the thing is for, then ranks on **cost of ownership**, not sticker price, because the cheap printer is the expensive one. Confidence-adjusts ratings for review count (a 4.3 from 4,000 beats a 4.8 from 60) and **excludes manufactured-looking review distributions** instead of rewarding them. Willing to answer *last year's model*, *refurbished*, *wait for the sale*, or *don't buy*. Knows Indian retail — seller warranty, GST invoice, grey imports, festive cycles. |
+
+The split is *what* versus *where*: `value-for-money` decides which product deserves your money,
+`lowest-price-finder` takes a product you've already chosen and finds the cheapest legitimate
+place to buy it.
 
 ### Health & nutrition
 
@@ -135,7 +140,7 @@ npx skills add prashant-cr/skills --all
 One thing worth knowing, because it surprises people: **the bare command is not a "browse" command.**
 
 ```bash
-npx skills add prashant-cr/skills     # <- installs ALL thirteen when run inside a coding agent
+npx skills add prashant-cr/skills     # <- installs ALL fourteen when run inside a coding agent
 ```
 
 Run in a plain terminal it prompts you to choose. But run inside a coding agent it detects that,

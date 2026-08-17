@@ -1,0 +1,80 @@
+{
+  "skill_name": "lowest-price-finder",
+  "evals": [
+    {
+      "id": 0,
+      "name": "named-product-needs-intake-and-landed-cost",
+      "prompt": "where's the cheapest place to buy sony wh-1000xm5 headphones? i'm in india",
+      "expected_output": "A named product with almost no other context. The valuable response asks the small number of questions that actually change the answer -- which bank cards or memberships they hold, whether refurbished is acceptable, whether they need it by a date, whether manufacturer warranty is required -- grouped into one message rather than one at a time. Crucially it should not block on those answers: it should state its assumptions and still deliver a live comparison. Prices must be fetched, not recalled, with a source and a timestamp, and the ranking must be on landed cost including shipping and applicable offers rather than sticker price. It should distinguish the marketplace from the seller, and should not present a bank-card discount as if everyone can use it.",
+      "files": [],
+      "assertions": [
+        "Asks about payment methods, bank cards or memberships as a factor in the final price",
+        "Asks at least two other intake questions that change the answer, such as condition acceptable, deadline, or warranty requirement",
+        "Groups its questions into a single message rather than asking one at a time",
+        "Still delivers a price comparison rather than only asking questions and stopping",
+        "States its assumptions explicitly where the user did not answer",
+        "Searches live for prices rather than quoting figures from memory",
+        "Attaches a source link or store name to each price quoted",
+        "Ranks on total cost including shipping or fees, not sticker price alone",
+        "Does not present a card-specific discount as available to everyone",
+        "Names a specific recommended store rather than only listing options"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "suspiciously-cheap-listing-is-a-risk-not-a-bargain",
+      "prompt": "found a sony wh-1000xm5 for 14,999 on a site called dealbazaar, but amazon and flipkart both have it around 26,000. seems like a steal, should i just grab it before it sells out?",
+      "expected_output": "The premise is a trap and the valuable answer inverts it. A price 42% below every legitimate seller is evidence of a problem rather than a bargain -- the patterns that fit are grey imports without Indian warranty, counterfeits, and listings that never ship. The response should say this plainly and give the specific checks that resolve it: who the seller is and their rating history, whether manufacturer warranty and a GST invoice are offered, whether the listing says imported or international variant, whether the domain is established, and whether payment is being pushed outside a protected flow. It should not simply endorse the deal because it is cheap, and it should not flatly declare it a scam without giving a checkable reason. It should also make clear what the buyer would be giving up if the unit is a grey import, since buying one knowingly is a legitimate choice.",
+      "files": [],
+      "assertions": [
+        "Treats the unusually low price as a risk signal rather than a bargain",
+        "Explicitly resists the user's framing that they should grab it quickly",
+        "Names grey import, counterfeit, or non-shipping listing as specific explanations for the gap",
+        "Gives concrete verifiable checks the buyer can run, such as seller rating, warranty, or invoice",
+        "Raises manufacturer warranty or after-sales service as what is being given up",
+        "Warns against paying outside a protected payment flow, or checks how payment is taken",
+        "Does not endorse the purchase simply because it is cheaper",
+        "Does not declare it definitively a scam without giving a checkable reason",
+        "Acknowledges that buying a grey import knowingly can be a legitimate choice",
+        "Quantifies how far below market the price is, or compares it against the legitimate spread"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "card-offer-decides-which-store-is-actually-cheaper",
+      "prompt": "i want to buy an iphone 15 128gb, black. i have an HDFC credit card and amazon prime. amazon vs flipkart, which works out cheaper for me? bangalore",
+      "expected_output": "This is the landed-cost case. The user has given the two things that decide it: the exact variant and the payment instruments they hold. The response must check current prices live on both, then apply only the offers this buyer can actually use -- an Axis or ICICI offer is worth nothing to an HDFC holder, and saying so is the point. Bank offer caps matter here: ten percent up to a fixed rupee cap on a phone at this price is usually the cap, not the percentage, and treating it as ten percent overstates the saving. It should note that the seller on a marketplace determines warranty and returns, check the brand store as a third option since Apple and its authorised sellers often match, and give a single recommendation with the total each way rather than a shrug.",
+      "files": [],
+      "assertions": [
+        "Fetches current prices from both retailers rather than quoting from memory",
+        "Applies only the offers this buyer can actually use given an HDFC card",
+        "Explicitly notes that an offer requiring a card the buyer does not hold is worth nothing to them",
+        "Addresses the cap on a percentage bank offer rather than applying the headline percentage",
+        "Gives a total effective price for each option, not just the sticker prices",
+        "Names one option as the cheaper choice for this buyer",
+        "Distinguishes the marketplace from the third-party seller for warranty or returns",
+        "Considers the brand store or an authorised seller as an additional option",
+        "Confirms or restates the exact variant being priced",
+        "Does not state a bank offer's terms as fact without indicating they need verifying"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "timing-can-beat-store-choice",
+      "prompt": "thinking of getting a 55 inch LG OLED tv, around 1.2 lakh budget. which site is cheapest right now?",
+      "expected_output": "The user asked only which site is cheapest, but for a discretionary large-ticket electronics purchase in India the timing question is worth more than the store question, because festive sale discounting on televisions dwarfs the spread between retailers. A strong answer prices it live across the relevant stores, and also tells the user where the price sits against its own recent history and whether a major sale is close enough to matter. It should ask whether they need it by a date, since that determines whether waiting is even available. It should also cover the things specific to large appliances that change the real cost -- installation, wall mount, delivery to floor, and the exchange offer on an old set, which often exceeds any discount. Naming the exact model matters here since LG OLED spans several series at very different prices.",
+      "files": [],
+      "assertions": [
+        "Raises timing or an upcoming sale as a factor, not only which store is cheapest",
+        "Asks whether the user needs it by a particular date, or notes that urgency changes the advice",
+        "Attempts to establish the exact model or series rather than pricing a generic 55 inch LG OLED",
+        "Searches live for current prices rather than recalling them",
+        "Mentions costs specific to large appliances such as installation, wall mount, or delivery",
+        "Raises exchange or trade-in value as a potentially larger saving than the discount",
+        "Compares the current price against its recent history or the spread of sellers, rather than accepting a claimed discount",
+        "Covers more than one retailer including at least one electronics specialist or brand store",
+        "Does not quote specific model prices from memory without marking them as needing verification"
+      ]
+    }
+  ]
+}
