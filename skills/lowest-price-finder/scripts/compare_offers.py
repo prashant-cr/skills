@@ -203,7 +203,10 @@ def screen(offer, product, buyer, median_landed, my_landed):
     """Return (blocking_reasons, warnings). Blocking means do not rank it."""
     block, warn = [], []
 
-    if not offer.get("url") or not offer.get("fetched_at"):
+    if not float(offer.get("price") or 0):
+        block.append("no readable price — the listing hides it until checkout, "
+                     "or it could not be fetched")
+    elif not offer.get("url") or not offer.get("fetched_at"):
         block.append("no source URL and timestamp — price not verifiable")
 
     if offer.get("in_stock") is False:
@@ -245,8 +248,12 @@ def screen(offer, product, buyer, median_landed, my_landed):
     if not offer.get("returns_days") and offer.get("returns_days") is not None:
         warn.append("no returns window")
 
-    # The inversion that matters: suspiciously cheap is a risk signal.
-    if median_landed and my_landed < median_landed * ANOMALY_FLOOR:
+    # The inversion that matters: suspiciously cheap is a risk signal. Only ask
+    # it of offers that actually carry a price -- an absent price is not a low
+    # one, and reading it as "100% below market" turns a missing field into a
+    # counterfeit accusation.
+    has_price = float(offer.get("price") or 0) > 0
+    if has_price and median_landed and my_landed < median_landed * ANOMALY_FLOOR:
         pct = int((1 - my_landed / median_landed) * 100)
         warn.append(f"{pct}% below the median legitimate price — verify before "
                     "buying; this pattern fits grey imports and counterfeits")
