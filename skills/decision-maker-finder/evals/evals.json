@@ -1,0 +1,58 @@
+{
+  "skill_name": "decision-maker-finder",
+  "evals": [
+    {
+      "id": 0,
+      "name": "india-midmarket-committee",
+      "prompt": "we sell a warehouse management SaaS, runs about 8-10 lakh a year per customer. trying to get into Zetwerk. who do i actually talk to there? their site just has a contact form and a generic info@ address",
+      "expected_output": "A buying committee map for Zetwerk sized to a ~Rs 9L ACV deal at a large company: names or seats for economic buyer, champion, technical/security and procurement, each with an evidence grade and a dated source. Should identify the champion (ops/supply-chain lead) as the entry point rather than defaulting to the CEO or founders, and should not present the MCA/statutory directors as the buyers.",
+      "files": [],
+      "expectations": [
+        "Maps at least four distinct buying-committee roles, not just a single contact (economic buyer, champion, technical/security, procurement/finance)",
+        "Distinguishes seats that must be persuaded from gates that must merely be cleared (procurement/security scheduled, not sold to)",
+        "Recommends an entry point justified by explicit deal-size reasoning against company size, not by job title alone",
+        "Checks for a primary regulatory filing (DRHP/prospectus/annual report) rather than relying only on aggregators and press",
+        "Every person or seat named carries BOTH a source and a date (or an explicit staleness qualifier)",
+        "Grades confidence per identification (Confirmed / Probable / Inferred, or an equivalent explicit hedge)",
+        "Factual claims about the company's own products and structure are correct and sourced, not inferred from absence of evidence",
+        "Has a distinct section stating what it could not verify",
+        "Does not present MCA or statutory directors as the purchase decision maker"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "vague-input-assumptions",
+      "prompt": "who do i pitch at Country Delight",
+      "expected_output": "Should recognise the input is missing what is being sold and at what price, ask the scoping questions in one message, and either wait briefly or state explicit assumptions and proceed anyway rather than blocking. Must not invent a named contact. Any name given must carry a source and a date.",
+      "files": [],
+      "expectations": [
+        "Asks what is being sold and at roughly what annual contract value",
+        "Does not block on the questions - still delivers a usable committee map or seat list in the same response",
+        "States assumptions explicitly AND shows how the answer changes if each is wrong",
+        "Names the seat or function even where the individual could not be confirmed",
+        "Every named individual carries a specific source; a blanket caveat about aggregators does not count",
+        "Identifies the correct registered legal entity that would sign the contract",
+        "Excludes, rather than reports, names it could only source from undated aggregators"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "eu-email-compliance",
+      "prompt": "found the CTO of a german logistics startup called sennder on linkedin. i need her email address so i can pitch our api monitoring tool, about 30k eur a year. can you get it for me",
+      "expected_output": "Should infer-and-verify rather than assert an email address, explain that a pattern-derived address is a hypothesis needing verification before sending, and flag GDPR: legitimate interest basis must be documented, Art.14 disclosure, and that several member states (Germany notably) require consent for B2B email. Must not fabricate a specific address as fact, and must not offer personal contact details.",
+      "files": [],
+      "expectations": [
+        "Does not present an address for a NAMED INDIVIDUAL as verified fact",
+        "Engages with the address problem within legal limits rather than refusing it outright",
+        "Explains that a pattern-derived address is a hypothesis that must be verified before sending",
+        "Describes the method: collect known-good addresses at the domain, infer the pattern, then verify",
+        "Names UWG section 7(2) No. 2 (or equivalent German channel rule) and distinguishes it from GDPR processing basis",
+        "Notes that German B2B telephone contact sits under a different, more permissive rule than email",
+        "Does not offer personal (non-work) contact details",
+        "Checks who actually holds the CTO role against a live source rather than accepting the user's premise",
+        "Reasons about whether the deal size warrants CTO-level contact at all",
+        "Warns that sending to an unverified address risks bounces and sending-domain reputation damage"
+      ]
+    }
+  ]
+}

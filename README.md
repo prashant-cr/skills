@@ -49,6 +49,12 @@ infrastructure, extract without brittle selectors, diagnose when something break
 | --- | --- |
 | [`seo-audit`](skills/seo-audit) | Audits a site's SEO in depth, then says which keywords it can **actually win** and in what order to do the work. Crawls the live site so every finding carries a URL and an observed value — indexation blockers, canonicalisation splits, duplicate titles, orphan pages, soft 404s — instead of reciting a checklist. Judges keywords by **who currently ranks**, not by an invented difficulty score, because a forum thread in the top five is an opening and ten strong incumbents is a closed door. Mines Search Console for striking-distance queries and for the case everyone gets backwards: a page at position 3 with 1% click-through has a title problem, not a ranking problem. **Refuses to invent search volumes.** Sequences the plan by payback, so the cheap wins land before anyone writes a word of new content. |
 
+### Sales & prospecting
+
+| Skill | What it does |
+| --- | --- |
+| [`decision-maker-finder`](skills/decision-maker-finder) | Finds who at a named company can actually approve what you're selling — and works it out from **deal size, category and headcount** rather than defaulting to the CEO, because a ₹40k tool is signed by a manager and a ₹40L rollout needs a CXO and finance. Maps the whole committee, not a contact: the economic buyer who says yes, the champion who carries it, and the security or procurement reviewer who can quietly kill it at week six. **Grades every name by its evidence and its date** — Confirmed, Probable, Inferred — because cold outreach is close to single-shot and a confidently wrong name is worse than an honest gap. Infers a work-email pattern from known-good samples and insists it be verified before sending, since a bounce costs the sending domain's reputation, not just the one email. Deep on India, where **statutory MCA directors are routinely not the buyer** and the real one holds no directorship at all. |
+
 ### Documents
 
 | Skill | What it does |
