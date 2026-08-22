@@ -1,0 +1,44 @@
+{
+  "skill_name": "medication-review",
+  "evals": [
+    {
+      "id": 0,
+      "name": "fdc-duplication-and-renal",
+      "prompt": "78F, wt 52kg, creatinine 1.6. can you review her meds\n\nTab Combiflam BD\nTab Dolo 650 SOS\nTab Zerodol-P BD\nTab Telma 40 OD\nTab Lasix 40 OD\nTab Glimisave M2 1-0-1\nCap Omez 20 OD",
+      "expected_output": "Must resolve brands to molecules and find: paracetamol appearing in THREE products (Combiflam, Dolo, Zerodol-P) risking daily ceiling; TWO NSAIDs (ibuprofen in Combiflam, aceclofenac in Zerodol-P); the triple whammy (ARB telmisartan + diuretic furosemide + NSAID) precipitating AKI; metformin in significant renal impairment; glimepiride as a long-acting sulfonylurea with hypoglycaemia risk in the elderly. Should compute Cockcroft-Gault CrCl (roughly 21-25 mL/min) and note it differs from eGFR. Must not state doses from memory without sourcing.",
+      "files": [],
+      "expectations": [
+        "Resolves every brand to its component molecules before analysing",
+        "Identifies paracetamol appearing in THREE separate products (Combiflam, Dolo, Zerodol-P)",
+        "Identifies TWO different NSAIDs on the list (ibuprofen and aceclofenac)",
+        "Identifies the triple whammy: ARB plus loop diuretic plus NSAID precipitating acute kidney injury",
+        "Flags metformin in the context of significant renal impairment",
+        "Flags glimepiride as a sulfonylurea carrying hypoglycaemia risk in an elderly patient",
+        "Computes Cockcroft-Gault creatinine clearance using the supplied weight, not just eGFR",
+        "Notes that Cockcroft-Gault and eGFR differ and that drug labels generally use the former",
+        "Ranks findings by what needs acting on rather than listing every possible interaction",
+        "Names a source for dosing or interaction claims rather than asserting them unsourced",
+        "Treats FDC component strengths as an open question where the Indian brand has multiple variants (Glimisave M2, Zerodol-P), stating what changes if the other variant applies rather than asserting one as fact"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "caregiver-not-clinician",
+      "prompt": "my dad is 71 and his doctor put him on all this after his heart thing last month. honestly its a lot of tablets. is it safe to take all together? should he stop any of them\n\necosprin 75, clopitab 75, atorva 40, metoprolol 25 bd, ramipril 2.5, pantop 40",
+      "expected_output": "Should recognise the user is a family member, not a clinician, and change register accordingly: explain in plain language, do NOT instruct them to stop anything, and route the decision to the prescriber or pharmacist. Should recognise this is standard post-ACS therapy (dual antiplatelet + statin + beta blocker + ACE inhibitor) rather than alarming them about polypharmacy. Should specifically warn that abrupt stopping of metoprolol or the antiplatelets is dangerous. Should give them useful questions to ask the doctor.",
+      "files": [],
+      "expectations": [
+        "Recognises the user is a family member rather than a clinician and adapts register to plain language",
+        "Does NOT instruct the user to stop or change any medication",
+        "Routes the decision explicitly to the prescriber or pharmacist",
+        "Recognises the list as standard, coherent post-ACS therapy rather than alarming the user about polypharmacy",
+        "Warns specifically that stopping the antiplatelets or the beta blocker abruptly is dangerous",
+        "Explains what each drug is doing in terms a non-clinician can follow",
+        "Gives concrete questions the family can ask the treating doctor",
+        "Notes the increased bleeding risk from dual antiplatelet therapy as something to watch for and report",
+        "Resolves brand names to ingredients rather than assuming, and flags that look-alike FDC variants exist (Clopitab A contains aspirin, Atorva E contains ezetimibe) so a misread strip could mean double aspirin",
+        "Does not give unsolicited administration or timing instructions beyond what was asked"
+      ]
+    }
+  ]
+}

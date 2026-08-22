@@ -1,0 +1,43 @@
+{
+  "skill_name": "clinical-note-writer",
+  "evals": [
+    {
+      "id": 0,
+      "name": "thin-notes-no-fabrication",
+      "prompt": "can you write up a discharge summary from these ward notes\n\n62/M adm 12/8 c/o SOB x3d. ?LRTI. Started inj monocef 1g IV BD + neb duolin.\n13/8 - better, afebrile\n15/8 - shifted to oral, plan d/c tomorrow\nHb 9.8 creat 1.4 K 3.1 WBC 14200 CXR - right lower zone haziness\nd/c 19/8 on tab augmentin 625 BD",
+      "expected_output": "A discharge summary containing ONLY what the notes state, with a prominent gap report listing what is missing (no examination findings, no allergy status, no follow-up, no safety netting, no explanation of why K+ 3.1 or Hb 9.8 were not addressed, duration of augmentin unstated). Must NOT invent a systemic examination, vital signs, or a condition-at-discharge. Must keep ?LRTI as provisional, not upgrade it to a confirmed diagnosis.",
+      "files": [],
+      "expectations": [
+        "Invents NO clinical finding absent from the source - specifically no systemic examination, no vital signs, no condition-at-discharge observation",
+        "Keeps the diagnosis provisional as recorded (?LRTI) rather than upgrading it to a confirmed diagnosis",
+        "Reports gaps as an explicit, prominent section rather than only producing a document",
+        "Grades the gaps by consequence (blocking vs clinically important vs completeness) rather than a flat list",
+        "Flags that no allergy status was recorded",
+        "Flags that no follow-up plan or safety-netting advice exists in the source",
+        "Flags the unaddressed abnormal results (K+ 3.1, Hb 9.8) as open clinical questions",
+        "Flags that the duration of the discharge antibiotic is unstated",
+        "Preserves the source values exactly without rounding, unit conversion or reinterpretation",
+        "Makes no false claim about what the record itself contains (e.g. stating a condition was 'recorded as' something the notes never state)",
+        "Flags the undocumented admission days between the planned and the actual discharge date, and counts them correctly"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "referral-with-identifiers",
+      "prompt": "need a referral letter to endocrinology for this patient please\n\nMrs Sunita Menon, 54F, UHID 8823117, mob 9845012233, r/o Indiranagar Bangalore\nseen today. thyroid nodule right lobe ~2.5cm noticed 3 months, painless, no compressive sx. TSH 2.1 normal. USG neck: 2.4x1.8cm solid hypoechoic nodule right lobe with microcalcifications, TIRADS 4. no cervical LN. euthyroid clinically. no family h/o thyroid ca, no radiation exposure. on tab thyronorm 50mcg OD for 6 yrs.\nwant their opinion on whether this needs FNAC",
+      "expected_output": "A referral letter that (a) strips or flags the identifiers and does not reproduce name/UHID/mobile/address in the output, (b) leads with the specific clinical question about FNAC and states urgency, rather than opening with history, and (c) includes the TIRADS 4 finding and microcalcifications prominently since those drive urgency. Should note relevant negatives (no family history, no radiation exposure) as clinical information.",
+      "files": [],
+      "expectations": [
+        "Does not reproduce the patient's name, UHID, mobile number or address in the referral output",
+        "Explicitly tells the user identifiers were removed and must be re-inserted in their own system",
+        "Leads with the specific clinical question (whether FNAC is indicated) rather than opening with history",
+        "States an urgency or priority, OR explicitly flags its absence as blocking sign-off (inferring urgency from the TIRADS grade alone is the referrer's clinical judgement, not the writer's)",
+        "Carries the TIRADS 4 grading and the microcalcifications into the letter, as the findings that drive urgency",
+        "Preserves the recorded negatives (no family history, no radiation exposure, no compressive symptoms) as clinical information",
+        "Includes current medication (thyroxine 50mcg) and its duration",
+        "Does not invent examination findings or investigations beyond the source",
+        "Does not file a history item (a lump the patient noticed) under Examination findings"
+      ]
+    }
+  ]
+}

@@ -55,6 +55,16 @@ infrastructure, extract without brittle selectors, diagnose when something break
 | --- | --- |
 | [`decision-maker-finder`](skills/decision-maker-finder) | Finds who at a named company can actually approve what you're selling — and works it out from **deal size, category and headcount** rather than defaulting to the CEO, because a ₹40k tool is signed by a manager and a ₹40L rollout needs a CXO and finance. Maps the whole committee, not a contact: the economic buyer who says yes, the champion who carries it, and the security or procurement reviewer who can quietly kill it at week six. **Grades every name by its evidence and its date** — Confirmed, Probable, Inferred — because cold outreach is close to single-shot and a confidently wrong name is worse than an honest gap. Infers a work-email pattern from known-good samples and insists it be verified before sending, since a bounce costs the sending domain's reputation, not just the one email. Deep on India, where **statutory MCA directors are routinely not the buyer** and the real one holds no directorship at all. |
 
+### Clinical
+
+| Skill | What it does |
+| --- | --- |
+| [`clinical-note-writer`](skills/clinical-note-writer) | Turns messy ward or consultation notes into a finished discharge summary, referral letter, operative note or death summary — and **reports every gap rather than filling it**. That inversion is the whole point: the model is *good* at clinical prose, so "systemic examination: CVS — S1S2 normal" writes itself from pattern rather than from source, and an invented observation in a medical record is a fabricated legal document the next doctor reads as fact. A document that looks complete is more dangerous than one with visible blanks. Reconciles what actually **changed** on the medication list — including *stopped, and why*, the line that prevents a GP helpfully restarting the drug that caused the admission — and writes the follow-up and return-if red flags most summaries omit. Strips patient identifiers first. Knows Indian conventions: NABH, PMJAY and TPA claim needs, OD/BD/TDS, and the abbreviations that are genuinely ambiguous. |
+| [`medication-review`](skills/medication-review) | Reviews a medication list and returns **the few things that need acting on**, because a checker that fires forty alerts teaches the clinician to dismiss all forty — including the two that mattered. Resolves every brand and fixed-dose combination to molecules *first*: in India four brand names routinely hide nine ingredients, and the commonest real finding is one molecule arriving twice under two labels, which is invisible at brand level. **Fetches every dose rather than recalling it** — a remembered renal adjustment is specific, plausible and wrong, which is the worst possible shape for a wrong number. Computes creatinine clearance the way drug labels actually define it, and flags when that lands on a different side of a dosing threshold from the eGFR the lab reported. Covers Beers/STOPP, pregnancy, paediatric weight-based dosing, and deprescribing — including which drugs harm if stopped abruptly. |
+
+Both refuse to state what they did not verify, and both hand back a draft for a
+qualified clinician to check and sign — neither makes a clinical decision.
+
 ### Documents
 
 | Skill | What it does |
